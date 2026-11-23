@@ -63,6 +63,7 @@ const eliminarUnico = new ListaEnlazada();
 eliminarUnico.agregarAlFinal('A');
 assert.equal(eliminarUnico.eliminar((dato) => dato === 'A'), 'A');
 verificar(eliminarUnico, null, null, 0);
+assert.equal(eliminarUnico.cola, null);
 assert.deepEqual(eliminarUnico.aArreglo(), []);
 
 // 9. Eliminar la cabeza.
@@ -79,6 +80,7 @@ eliminarCola.agregarAlFinal('A');
 eliminarCola.agregarAlFinal('B');
 assert.equal(eliminarCola.eliminar((dato) => dato === 'B'), 'B');
 verificar(eliminarCola, 'A', 'A', 1);
+assert.equal(eliminarCola.cola.siguiente, null);
 assert.deepEqual(eliminarCola.aArreglo(), ['A']);
 
 // 11. Intentar eliminar un dato que no existe.

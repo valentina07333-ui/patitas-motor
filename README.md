@@ -1,13 +1,23 @@
 # Patitas Motor
 
-Ejemplo de historial veterinario de Lola con una lista enlazada en JavaScript. Cada atención se guarda en un nodo que apunta al siguiente.
+Este proyecto guarda las visitas al veterinario de Lola, Toby y Mía. Al ejecutar el reporte, puedes ver sus atenciones, cuántas tiene cada mascota, cuánto suman y cuándo fue su última vacunación registrada.
 
-## Ejecutar
+## Cómo ejecutarlo
 
-Necesitas Node.js. Desde la carpeta del proyecto, ejecuta:
+Necesitas tener Node.js instalado. Abre una terminal en esta carpeta y ejecuta:
 
 ```bash
-node pruebas/nodos.js
+node src/reporte.js
 ```
 
-El programa muestra las atenciones en orden cronológico y calcula el costo total del historial.
+Para correr las pruebas de la lista enlazada:
+
+```bash
+node pruebas/lista.js
+```
+
+## Qué estructuras usa
+
+- **Nodo:** guarda una atención y apunta a la siguiente.
+- **Lista enlazada:** conecta las atenciones y permite agregarlas, buscarlas, eliminarlas y recorrerlas.
+- **Registro clínico:** usa un `Map` para guardar una lista distinta por mascota.
