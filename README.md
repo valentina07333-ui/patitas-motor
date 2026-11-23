@@ -21,3 +21,15 @@ node pruebas/lista.js
 - **Nodo:** guarda una atención y apunta a la siguiente.
 - **Lista enlazada:** conecta las atenciones y permite agregarlas, buscarlas, eliminarlas y recorrerlas.
 - **Registro clínico:** usa un `Map` para guardar una lista distinta por mascota.
+
+## Lista enlazada y arreglo
+
+Complejidad para las operaciones más comunes (n es la cantidad de atenciones):
+
+| Operación | Lista enlazada | Arreglo |
+| --- | --- | --- |
+| Buscar un dato | O(n) | O(n) |
+| Acceder por posición | O(n) | O(1) |
+| Agregar al inicio | O(1) | O(n) |
+| Agregar al final | O(1) con `cola` | O(1) amortizado |
+| Eliminar el último | O(n), hay que buscar el anterior | O(1) |
