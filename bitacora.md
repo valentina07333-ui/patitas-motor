@@ -10,18 +10,43 @@ Si `nodoVacunacion.siguiente` queda en `null`, desde `cabeza` solo se llega a la
 
 ## Agregar una atención
 
-`nuevo` es el nodo que se agrega. En una lista vacía, da igual si va al inicio o al final: `cabeza` apunta a él.
+`nuevo` es el nodo que agregamos. Si la lista está vacía, tanto al inicio como al final `cabeza` y `cola` apuntan al mismo nodo:
 
 ```text
-Vacía:       cabeza → null
-Con nuevo:   cabeza → [nuevo] → null
+Antes:    cabeza → null
+Después:  cabeza, cola → [nuevo] → null
 ```
 
-Si ya hay nodos, al **inicio** `cabeza` apunta a `nuevo`, y `nuevo` apunta al que antes era primero. Al **final**, el último nodo apunta a `nuevo`.
+Con un nodo, al inicio `cabeza` cambia; al final cambia el enlace del último nodo:
 
 ```text
-Inicio:  cabeza → [nuevo] → [A] → [B] → null
-Final:   cabeza → [A] → [B] → [nuevo] → null
+Inicio:  cabeza → [nuevo] → [A] → null   (cola → [A])
+Final:   cabeza → [A] → [nuevo] → null   (cola → [nuevo])
 ```
 
-Esto funciona igual si antes había uno o varios nodos: solo cambian esas referencias; el resto de la cadena queda igual.
+Con varios nodos pasa lo mismo: al inicio el nuevo apunta al primero; al final el último apunta al nuevo.
+
+```text
+Inicio:  cabeza → [nuevo] → [A] → [B] → null   (cola → [B])
+Final:   cabeza → [A] → [B] → [nuevo] → null   (cola → [nuevo])
+```
+
+## Complejidad
+
+- `agregarAlInicio` y `agregarAlFinal`: O(1), actualizan unas pocas referencias y no recorren la lista.
+- `estaVacia` y `obtenerTamanio`: O(1), consultan una propiedad.
+- `recorrer` y `aArreglo`: O(n), visitan cada nodo una vez. `aArreglo` además usa O(n) espacio para guardar los datos.
+- Crear una lista: O(1).
+
+## Eliminar un nodo
+
+Así queda la lista en cada caso:
+
+```text
+Cabeza:      [A] → [B] → [C]     queda [B] → [C]
+Del medio:   [A] → [B] → [C]     queda [A] → [C]
+Cola:        [A] → [B] → [C]     queda [A] → [B] (cola ahora es B)
+```
+
+- `buscar`, `insertarDespuesDe` y `eliminar`: O(n) en el peor caso, porque recorren la lista.
+- Eliminar la cola también es O(n): aunque tenemos `cola`, necesitamos recorrer desde `cabeza` para encontrar el nodo anterior y actualizar su enlace.
