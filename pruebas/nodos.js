@@ -1,4 +1,4 @@
-const Nodo = require('../src/nodo');
+const Nodo = require('../src/Nodo');
 
 const lola = {
   nombre: 'Lola',
@@ -48,12 +48,3 @@ console.log('Costo total del historial:', costoTotal);
 
 module.exports = { lola, nodoVacunacion, nodoControlPeso, nodoLimpiezaDental, cabeza, costoTotal };
 
-// Se pierde a propósito el enlace al segundo nodo.
-nodoVacunacion.siguiente = null;
-
-console.log('Recorrido después de perder el enlace:');
-actual = cabeza;
-while (actual !== null) {
-  console.log(actual.dato);
-  actual = actual.siguiente;
-}
