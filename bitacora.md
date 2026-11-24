@@ -50,3 +50,30 @@ Cola:        [A] → [B] → [C]     queda [A] → [B] (cola ahora es B)
 
 - `buscar`, `insertarDespuesDe` y `eliminar`: O(n) en el peor caso, porque recorren la lista.
 - Eliminar la cola también es O(n): aunque tenemos `cola`, necesitamos recorrer desde `cabeza` para encontrar el nodo anterior y actualizar su enlace.
+
+## Cola de recepción (FIFO)
+
+Después de encolar a las tres mascotas:
+
+```text
+frente → [Lola] → [Toby] → [Mía] ← final
+```
+
+Después de llamar a Lola y desencolar una vez:
+
+```text
+frente → [Toby] → [Mía] ← final
+```
+
+## Comparación de cola y arreglo
+
+Medí 100.000 turnos con `node pruebas/comparar-cola.js`:
+
+| Operación | Cola enlazada | Arreglo |
+| --- | ---: | ---: |
+| Encolar (`encolar` / `push`) | 5,44 ms | 4,15 ms |
+| Desencolar (`desencolar` / `shift`) | 0,71 ms | 618,51 ms |
+
+En esta ejecución, `shift()` tardó mucho más porque desplaza los elementos restantes. Los tiempos pueden cambiar según el computador y la carga del sistema.
+
+`encolar` y `desencolar` en la cola enlazada son O(1). En el arreglo, `push` es O(1) amortizado, pero `shift` es O(n): mueve los demás turnos para dejar libre el primer lugar. Por eso la cola enlazada desencola más rápido cuando hay muchos turnos.
