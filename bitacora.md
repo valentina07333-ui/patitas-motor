@@ -93,3 +93,24 @@ Cada consulta dura 20 minutos. Solo entra alguien que ya llegó; entre quienes e
 | 10:00 | Nala | Última consulta general. |
 
 Así, aunque Max llegó antes que Luna, las urgencias que ya estaban esperando pasan primero.
+
+## Pila para deshacer y rehacer
+
+La hice con nodos: `apilar` y `desapilar` trabajan desde el tope en O(1), sin mover los demás elementos.
+
+## Prueba rápida de deshacer y rehacer
+
+Tope a la izquierda. `+` agrega y `−` elimina.
+
+| Paso | Acción | Deshacer | Rehacer |
+| --- | --- | --- | --- |
+| 1 | Agregar A | A+ | — |
+| 2 | Agregar B | B+, A+ | — |
+| 3 | Eliminar A | A−, B+, A+ | — |
+| 4 | Deshacer | B+, A+ | A− |
+| 5 | Deshacer | A+ | B+, A− |
+| 6 | Rehacer | B+, A+ | A− |
+| 7 | Agregar C | C+, B+, A+ | — |
+| 8 | Rehacer | C+, B+, A+ | — |
+
+Agregar C borra lo que quedaba por rehacer. Lo comprobé en `pruebas/editor.js`.

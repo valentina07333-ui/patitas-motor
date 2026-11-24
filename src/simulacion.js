@@ -63,7 +63,11 @@ while (
     }
   }
 
-  tiempo++;
+  if (finAtencion !== null) {
+    tiempo = finAtencion;
+  } else if (indiceLlegada < llegadas.length) {
+    tiempo = aMinutos(llegadas[indiceLlegada].horaLlegada);
+  }
 }
 
 for (const [tipo, datos] of Object.entries(esperas)) {
