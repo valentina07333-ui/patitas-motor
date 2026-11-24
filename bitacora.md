@@ -96,7 +96,7 @@ Así, aunque Max llegó antes que Luna, las urgencias que ya estaban esperando p
 
 ## Pila para deshacer y rehacer
 
-La hice con nodos: `apilar` y `desapilar` trabajan desde el tope en O(1), sin mover los demás elementos.
+La hice con nodos. `apilar`, `desapilar`, `verTope`, `estaVacia` y `tamanio` son O(1): consultan o cambian el tope y el contador.
 
 ## Prueba rápida de deshacer y rehacer
 
@@ -114,3 +114,13 @@ Tope a la izquierda. `+` agrega y `−` elimina.
 | 8 | Rehacer | C+, B+, A+ | — |
 
 Agregar C borra lo que quedaba por rehacer. Lo comprobé en `pruebas/editor.js`.
+
+## Estructuras del motor
+
+| Estructura | Principio | Uso en Patitas | Operaciones principales |
+| --- | --- | --- | --- |
+| `Nodo` y lista enlazada | Secuencial | Guardan las atenciones de cada mascota | Agregar al inicio/final: O(1); buscar, eliminar y recorrer: O(n) |
+| `Cola` | FIFO | Ordena los turnos por llegada | Encolar y desencolar: O(1) |
+| `Pila` | LIFO | Guarda acciones para deshacer y rehacer | Apilar, desapilar y ver el tope: O(1) |
+| `Map` en `RegistroClinico` | Acceso por clave | Encuentra el historial de cada mascota | Guardar y buscar historial: O(1) promedio |
+| Arreglo | Secuencial por posición | Comparación con la cola enlazada | `push`: O(1) amortizado; `shift`: O(n) |

@@ -1,30 +1,44 @@
 # Patitas Motor
 
-Este proyecto guarda las visitas al veterinario de Lola, Toby y Mía. Al ejecutar el reporte, puedes ver sus atenciones, cuántas tiene cada mascota, cuánto suman y cuándo fue su última vacunación registrada.
+Patitas Motor guarda historiales clínicos y organiza los turnos de una clínica veterinaria. Usa listas enlazadas para las atenciones, colas para respetar la prioridad de urgencias y pilas para deshacer o rehacer cambios.
 
-## Cómo ejecutarlo
+## Ejecutar
 
-Necesitas tener Node.js instalado. Abre una terminal en esta carpeta y ejecuta:
+Necesitas Node.js. Desde la carpeta del proyecto, puedes ejecutar el reporte de historiales:
 
 ```bash
 node src/reporte.js
 ```
 
-Para correr las pruebas de la lista enlazada:
+Para simular la mañana del sábado —con llegadas, prioridad de urgencias, tiempos de espera, registro de atenciones y corrección de un error— ejecuta:
+
+```bash
+node src/simulacion.js
+```
+
+## Pruebas y comparación
 
 ```bash
 node pruebas/lista.js
+node pruebas/cola.js
+node pruebas/recepcion.js
+node pruebas/pila.js
+node pruebas/editor.js
+node pruebas/comparar-cola.js
 ```
 
-## Qué estructuras usa
+## Estructuras
 
-- **Nodo:** guarda una atención y apunta a la siguiente.
-- **Lista enlazada:** conecta las atenciones y permite agregarlas, buscarlas, eliminarlas y recorrerlas.
-- **Registro clínico:** usa un `Map` para guardar una lista distinta por mascota.
+- **Lista enlazada:** guarda en orden las atenciones de cada mascota.
+- **Map:** relaciona cada mascota con su historial.
+- **Colas FIFO:** separan urgencias y consultas generales; las urgencias pasan primero.
+- **Pilas LIFO:** permiten deshacer y rehacer acciones del registro.
+
+La bitácora incluye diagramas, decisiones y comparaciones de complejidad.
 
 ## Lista enlazada y arreglo
 
-Complejidad para las operaciones más comunes (n es la cantidad de atenciones):
+Complejidad de las operaciones principales (n es la cantidad de atenciones):
 
 | Operación | Lista enlazada | Arreglo |
 | --- | --- | --- |

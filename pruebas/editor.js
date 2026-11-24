@@ -2,6 +2,9 @@ const assert = require('node:assert/strict');
 const Editor = require('../src/Editor');
 
 const editor = new Editor();
+assert.equal(editor.deshacer(), false);
+assert.equal(editor.rehacer(), false);
+assert.equal(editor.registro.obtenerHistorial('Lola'), null);
 const A = { id: 'A' };
 const B = { id: 'B' };
 const C = { id: 'C' };
