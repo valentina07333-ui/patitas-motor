@@ -1,7 +1,7 @@
-const assert = require('node:assert/strict');
-const Pila = require('../src/Pila');
+let assert = require('node:assert/strict');
+let Pila = require('../src/Pila');
 
-const pila = new Pila();
+let pila = new Pila();
 assert.equal(pila.estaVacia(), true);
 assert.equal(pila.verTope(), null);
 assert.equal(pila.desapilar(), null);

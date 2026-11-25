@@ -1,27 +1,27 @@
-const assert = require('node:assert/strict');
-const Nodo = require('../src/Nodo');
+let assert = require('node:assert/strict');
+let Nodo = require('../src/Nodo');
 
-const lola = {
+let lola = {
   nombre: 'Lola',
   especie: 'gata',
   edad: 4,
 };
 
-const nodoVacunacion = new Nodo({
+let nodoVacunacion = new Nodo({
   fecha: '02/02',
   motivo: 'vacunación',
   veterinario: 'Dra. Ríos',
   costo: 85000,
 });
 
-const nodoControlPeso = new Nodo({
+let nodoControlPeso = new Nodo({
   fecha: '15/03',
   motivo: 'control de peso',
   veterinario: 'Dr. Gómez',
   costo: 40000,
 });
 
-const nodoLimpiezaDental = new Nodo({
+let nodoLimpiezaDental = new Nodo({
   fecha: '20/05',
   motivo: 'limpieza dental',
   veterinario: 'Dra. Ríos',
@@ -31,7 +31,7 @@ const nodoLimpiezaDental = new Nodo({
 nodoVacunacion.siguiente = nodoControlPeso;
 nodoControlPeso.siguiente = nodoLimpiezaDental;
 
-const cabeza = nodoVacunacion;
+let cabeza = nodoVacunacion;
 
 let actual = cabeza;
 while (actual !== null) {
@@ -47,7 +47,7 @@ while (actual !== null) {
 }
 console.log(
   'Costo total del historial:',
-  `$${new Intl.NumberFormat('es-CO').format(costoTotal)}`,
+  '$' + new Intl.NumberFormat('es-CO').format(costoTotal),
 );
 
 nodoVacunacion.siguiente = null;
@@ -63,4 +63,11 @@ console.log(
   atencionesAlcanzables,
 );
 
-module.exports = { lola, nodoVacunacion, nodoControlPeso, nodoLimpiezaDental, cabeza, costoTotal };
+module.exports = {
+  lola: lola,
+  nodoVacunacion: nodoVacunacion,
+  nodoControlPeso: nodoControlPeso,
+  nodoLimpiezaDental: nodoLimpiezaDental,
+  cabeza: cabeza,
+  costoTotal: costoTotal,
+};

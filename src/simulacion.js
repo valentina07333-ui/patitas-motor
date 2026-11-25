@@ -1,7 +1,7 @@
-const Recepcion = require('./Recepcion');
-const Editor = require('./Editor');
+let Recepcion = require('./Recepcion');
+let Editor = require('./Editor');
 
-const llegadas = [
+let llegadas = [
   { horaLlegada: '08:00', mascota: 'Toby', tipo: 'General', motivo: 'Control de vacunas' },
   { horaLlegada: '08:05', mascota: 'Max', tipo: 'General', motivo: 'Revisión de piel' },
   { horaLlegada: '08:10', mascota: 'Luna', tipo: 'Urgencia', motivo: 'Intoxicación' },
@@ -12,25 +12,27 @@ const llegadas = [
 ];
 
 function aMinutos(hora) {
-  const [horas, minutos] = hora.split(':').map(Number);
+  let partes = hora.split(':');
+  let horas = Number(partes[0]);
+  let minutos = Number(partes[1]);
   return horas * 60 + minutos;
 }
 
 function aHora(minutos) {
-  const horas = String(Math.floor(minutos / 60)).padStart(2, '0');
-  const resto = String(minutos % 60).padStart(2, '0');
-  return `${horas}:${resto}`;
+  let horas = String(Math.floor(minutos / 60)).padStart(2, '0');
+  let resto = String(minutos % 60).padStart(2, '0');
+  return horas + ':' + resto;
 }
 
-const recepcion = new Recepcion();
-const editor = new Editor();
+let recepcion = new Recepcion();
+let editor = new Editor();
 let indiceLlegada = 0;
 let tiempo = aMinutos(llegadas[0].horaLlegada);
 let finAtencion = null;
 let turnoEnAtencion = null;
 let inicioAtencion = null;
-const reporteAtencion = [];
-const esperas = {
+let reporteAtencion = [];
+let esperas = {
   Urgencia: { total: 0, cantidad: 0 },
   General: { total: 0, cantidad: 0 },
 };
@@ -50,7 +52,7 @@ while (
   }
 
   if (finAtencion !== null && tiempo >= finAtencion) {
-    const atencion = {
+    let atencion = {
       horaLlegada: turnoEnAtencion.horaLlegada,
       horaAtencion: aHora(inicioAtencion),
       tipo: turnoEnAtencion.tipo,
@@ -58,12 +60,15 @@ while (
       esperaMinutos: inicioAtencion - aMinutos(turnoEnAtencion.horaLlegada),
     };
 
-    reporteAtencion.push({
+    let filaReporte = {
       mascota: turnoEnAtencion.mascota,
       tipo: turnoEnAtencion.tipo,
       motivo: turnoEnAtencion.motivo,
-      ...atencion,
-    });
+      horaLlegada: atencion.horaLlegada,
+      horaAtencion: atencion.horaAtencion,
+      esperaMinutos: atencion.esperaMinutos,
+    };
+    reporteAtencion.push(filaReporte);
 
     if (turnoEnAtencion.mascota === 'Toby') {
       console.log('Error: la atención de Toby se registró en Max.');
@@ -81,11 +86,15 @@ while (
   }
 
   if (finAtencion === null) {
-    const turno = recepcion.llamarSiguiente();
+    let turno = recepcion.llamarSiguiente();
     if (turno !== null) {
-      const llegada = aMinutos(turno.horaLlegada);
-      const espera = tiempo - llegada;
-      const grupo = turno.tipo.toLowerCase() === 'urgencia' ? 'Urgencia' : 'General';
+      let llegada = aMinutos(turno.horaLlegada);
+      let espera = tiempo - llegada;
+      let grupo = 'General';
+      if (turno.tipo.toLowerCase() === 'urgencia') {
+        grupo = 'Urgencia';
+      }
+
       esperas[grupo].total += espera;
       esperas[grupo].cantidad++;
       turnoEnAtencion = turno;
@@ -102,24 +111,47 @@ while (
 }
 
 console.log('Reporte de atención:');
-reporteAtencion.forEach((atencion, indice) => {
+for (let indice = 0; indice < reporteAtencion.length; indice++) {
+  let atencion = reporteAtencion[indice];
   console.log(
-    `${indice + 1}. ${atencion.mascota} (${atencion.tipo}) | llegó ${atencion.horaLlegada} | atención ${atencion.horaAtencion} | espera ${atencion.esperaMinutos} min | ${atencion.motivo}`,
+    (indice + 1) + '. ' + atencion.mascota + ' (' + atencion.tipo + ') | llegó ' +
+    atencion.horaLlegada + ' | atención ' + atencion.horaAtencion + ' | espera ' +
+    atencion.esperaMinutos + ' min | ' + atencion.motivo,
   );
-});
+}
 
-for (const [tipo, datos] of Object.entries(esperas)) {
-  const promedio = datos.cantidad === 0 ? 0 : datos.total / datos.cantidad;
-  const nombre = tipo === 'Urgencia' ? 'urgencias' : 'consultas generales';
-  console.log(`Espera promedio de ${nombre}: ${promedio.toFixed(2)} minutos`);
+let tipos = Object.keys(esperas);
+for (let i = 0; i < tipos.length; i++) {
+  let tipo = tipos[i];
+  let datos = esperas[tipo];
+
+  let promedio = 0;
+  if (datos.cantidad > 0) {
+    promedio = datos.total / datos.cantidad;
+  }
+
+  let nombre = 'consultas generales';
+  if (tipo === 'Urgencia') {
+    nombre = 'urgencias';
+  }
+
+  console.log('Espera promedio de ' + nombre + ': ' + promedio.toFixed(2) + ' minutos');
 }
 
 console.log('\nHistoriales actualizados:');
-for (const [mascota, historial] of editor.registro.historiales) {
-  console.log(`${mascota} (${historial.obtenerTamanio()} atenciones):`);
-  historial.recorrer((atencion) => {
+let mascotas = [];
+editor.registro.historiales.forEach(function (historial, mascota) {
+  mascotas.push(mascota);
+});
+
+for (let j = 0; j < mascotas.length; j++) {
+  let mascota = mascotas[j];
+  let historial = editor.registro.obtenerHistorial(mascota);
+  console.log(mascota + ' (' + historial.obtenerTamanio() + ' atenciones):');
+  historial.recorrer(function (atencion) {
     console.log(
-      `  ${atencion.horaAtencion} | ${atencion.motivo} | ${atencion.tipo} | espera ${atencion.esperaMinutos} min`,
+      '  ' + atencion.horaAtencion + ' | ' + atencion.motivo + ' | ' +
+      atencion.tipo + ' | espera ' + atencion.esperaMinutos + ' min',
     );
   });
 }

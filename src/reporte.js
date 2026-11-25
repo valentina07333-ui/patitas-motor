@@ -1,8 +1,8 @@
-const RegistroClinico = require('./RegistroClinico');
+let RegistroClinico = require('./RegistroClinico');
 
-const registro = new RegistroClinico();
+let registro = new RegistroClinico();
 
-const atenciones = [
+let atenciones = [
   {
     mascota: 'Lola (gata)',
     fecha: '02/02',
@@ -61,32 +61,48 @@ const atenciones = [
   },
 ];
 
-for (const { mascota, ...atencion } of atenciones) {
-  registro.registrarAtencion(mascota, atencion);
+for (let i = 0; i < atenciones.length; i++) {
+  let dato = atenciones[i];
+  let atencion = {
+    fecha: dato.fecha,
+    motivo: dato.motivo,
+    veterinario: dato.veterinario,
+    costo: dato.costo,
+  };
+
+  registro.registrarAtencion(dato.mascota, atencion);
 }
 
-const formatoCosto = new Intl.NumberFormat('es-CO');
+let formatoCosto = new Intl.NumberFormat('es-CO');
 
-for (const [mascota, historial] of registro.historiales) {
+let mascotas = [];
+registro.historiales.forEach(function (historial, mascota) {
+  mascotas.push(mascota);
+});
+
+for (let j = 0; j < mascotas.length; j++) {
+  let mascota = mascotas[j];
+  let historial = registro.obtenerHistorial(mascota);
   let costoTotal = 0;
 
-  console.log(`\nHistorial de ${mascota}:`);
-  historial.recorrer((atencion) => {
+  console.log('\nHistorial de ' + mascota + ':');
+  historial.recorrer(function (atencion) {
     console.log(
-      `${atencion.fecha} | ${atencion.motivo} | ${atencion.veterinario} | $${formatoCosto.format(atencion.costo)}`,
+      atencion.fecha + ' | ' + atencion.motivo + ' | ' + atencion.veterinario +
+      ' | $' + formatoCosto.format(atencion.costo),
     );
     costoTotal += atencion.costo;
   });
 
-  const vacunacion = historial.buscar((atencion) =>
-    atencion.motivo.toLowerCase().includes('vacunación'),
-  );
+  let vacunacion = historial.buscar(function (atencion) {
+    return atencion.motivo.toLowerCase().indexOf('vacunación') !== -1;
+  });
   if (vacunacion === null) {
     console.log('Última vacunación: sin registro');
   } else {
-    console.log(`Última vacunación: ${vacunacion.fecha} - ${vacunacion.motivo}`);
+    console.log('Última vacunación: ' + vacunacion.fecha + ' - ' + vacunacion.motivo);
   }
 
-  console.log(`Número de atenciones: ${historial.obtenerTamanio()}`);
-  console.log(`Costo total: $${formatoCosto.format(costoTotal)}`);
+  console.log('Número de atenciones: ' + historial.obtenerTamanio());
+  console.log('Costo total: $' + formatoCosto.format(costoTotal));
 }

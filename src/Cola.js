@@ -1,4 +1,4 @@
-const Nodo = require('./Nodo');
+let Nodo = require('./Nodo');
 
 class Cola {
   constructor() {
@@ -8,7 +8,7 @@ class Cola {
   }
 
   encolar(dato) {
-    const nuevo = new Nodo(dato);
+    let nuevo = new Nodo(dato);
 
     if (this.estaVacia()) {
       this.frente = nuevo;
@@ -26,7 +26,7 @@ class Cola {
       return null;
     }
 
-    const dato = this.frente.dato;
+    let dato = this.frente.dato;
     this.frente = this.frente.siguiente;
     this._tamanio--;
 
@@ -38,7 +38,11 @@ class Cola {
   }
 
   verFrente() {
-    return this.frente === null ? null : this.frente.dato;
+    if (this.frente === null) {
+      return null;
+    }
+
+    return this.frente.dato;
   }
 
   estaVacia() {

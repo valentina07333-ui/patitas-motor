@@ -1,15 +1,13 @@
-const assert = require('node:assert/strict');
-const Cola = require('../src/Cola');
+let assert = require('node:assert/strict');
+let Cola = require('../src/Cola');
 
-const cola = new Cola();
+let cola = new Cola();
 
-// Desencolar una cola vacía devuelve null y no falla.
 assert.equal(cola.desencolar(), null);
 assert.equal(cola.frente, null);
 assert.equal(cola.final, null);
 assert.equal(cola.tamanio(), 0);
 
-// Al quitar el último dato, ambos extremos vuelven a null.
 cola.encolar('Lola');
 assert.equal(cola.desencolar(), 'Lola');
 assert.equal(cola.frente, null);
@@ -19,7 +17,7 @@ assert.equal(cola.tamanio(), 0);
 
 console.log('Los casos de cola vacía pasaron.');
 
-const turnos = [
+let turnos = [
   { mascota: 'Lola', tutor: 'Ana', horaLlegada: '08:00', motivo: 'Vacunación' },
   { mascota: 'Toby', tutor: 'Luis', horaLlegada: '08:10', motivo: 'Cojera' },
   { mascota: 'Mía', tutor: 'Sofía', horaLlegada: '08:20', motivo: 'Control' },
@@ -27,16 +25,16 @@ const turnos = [
   { mascota: 'Nina', tutor: 'Elena', horaLlegada: '08:40', motivo: 'Vacunación' },
 ];
 
-for (const turno of turnos) {
-  cola.encolar(turno);
+for (let i = 0; i < turnos.length; i++) {
+  cola.encolar(turnos[i]);
 }
 
 assert.equal(cola.tamanio(), 5);
 assert.equal(cola.verFrente(), turnos[0]);
 assert.equal(cola.final.dato, turnos[4]);
 
-for (const turno of turnos) {
-  assert.equal(cola.desencolar(), turno);
+for (let j = 0; j < turnos.length; j++) {
+  assert.equal(cola.desencolar(), turnos[j]);
 }
 
 assert.equal(cola.estaVacia(), true);

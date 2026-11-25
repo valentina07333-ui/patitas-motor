@@ -1,12 +1,12 @@
-# Las atenciones de Lola
+# Mi bitácora de Patitas
 
-La lista va de la atención más antigua a la más reciente:
+En este ejercicio hice una cadena de nodos con las atenciones de Lola. La primera es la más antigua y la última es la más nueva:
 
 ```text
 cabeza → [Vacunación, 02/02] → [Control de peso, 15/03] → [Limpieza dental, 20/05] → null
 ```
 
-En `pruebas/nodos.js` se recorre primero la cadena completa y se calcula el total. Después se asigna `null` a `nodoVacunacion.siguiente` a propósito. El recorrido desde `cabeza` alcanza entonces solo un nodo: el control de peso y la limpieza dental siguen existiendo en memoria, pero ya no hay referencias desde la cabeza que permitan llegar a ellos.
+En `pruebas/nodos.js` primero muestro las atenciones y sumo sus costos. Después pongo `null` en `nodoVacunacion.siguiente` para probar qué pasa si se pierde el enlace. Al recorrer desde `cabeza`, solo aparece la vacunación. El control de peso y la limpieza todavía existen, pero ya no puedo llegar a ellos desde la cabeza porque se cortó la cadena.
 
 ```text
 Antes:    cabeza → [Vacunación] → [Control] → [Limpieza] → null
@@ -14,41 +14,41 @@ Después:  cabeza → [Vacunación] → null
                        [Control] → [Limpieza] → null  (desconectados)
 ```
 
-La prueba comprueba que tras perder el enlace queda una sola atención alcanzable. La ejecución inicial imprime las tres atenciones y el total `$275.000` antes de modificar el enlace.
+La prueba también cuenta los nodos alcanzables y comprueba que queda uno. Antes de cortar el enlace, imprime las tres atenciones y el total `$275.000`.
 
-## Agregar una atención
+## Agregar atenciones
 
-`nuevo` es el nodo que agregamos. Si la lista está vacía, tanto al inicio como al final `cabeza` y `cola` apuntan al mismo nodo:
+`nuevo` es el nodo que quiero agregar. Si la lista está vacía, `cabeza` y `cola` apuntan al mismo nodo, tanto si lo agrego al principio como al final:
 
 ```text
 Antes:    cabeza → null
 Después:  cabeza, cola → [nuevo] → null
 ```
 
-Con un nodo, al inicio `cabeza` cambia; al final cambia el enlace del último nodo:
+Si ya hay un nodo, al agregar al inicio cambia `cabeza`. Al agregar al final, el nodo que estaba al final apunta al nuevo:
 
 ```text
 Inicio:  cabeza → [nuevo] → [A] → null   (cola → [A])
 Final:   cabeza → [A] → [nuevo] → null   (cola → [nuevo])
 ```
 
-Con varios nodos pasa lo mismo: al inicio el nuevo apunta al primero; al final el último apunta al nuevo.
+Con varios nodos es parecido. Al inicio, el nuevo apunta al primero. Al final, el último apunta al nuevo.
 
 ```text
 Inicio:  cabeza → [nuevo] → [A] → [B] → null   (cola → [B])
 Final:   cabeza → [A] → [B] → [nuevo] → null   (cola → [nuevo])
 ```
 
-## Complejidad
+## Cuánto tarda cada operación
 
-- `agregarAlInicio` y `agregarAlFinal`: O(1), actualizan unas pocas referencias y no recorren la lista.
-- `estaVacia` y `obtenerTamanio`: O(1), consultan una propiedad.
-- `recorrer` y `aArreglo`: O(n), visitan cada nodo una vez. `aArreglo` además usa O(n) espacio para guardar los datos.
-- Crear una lista: O(1).
+- `agregarAlInicio` y `agregarAlFinal` son O(1). Cambian unas referencias y no tienen que buscar por la lista.
+- `estaVacia` y `obtenerTamanio` son O(1), porque leen un valor guardado.
+- `recorrer` y `aArreglo` son O(n), porque visitan todos los nodos. `aArreglo` también usa O(n) espacio para guardar los datos.
+- Crear una lista es O(1).
 
-## Eliminar un nodo
+## Eliminar atenciones
 
-Así queda la lista en cada caso:
+Estos son los dibujos de cómo queda la lista cuando elimino un nodo:
 
 ```text
 Cabeza:      [A] → [B] → [C]     queda [B] → [C]
@@ -56,12 +56,12 @@ Del medio:   [A] → [B] → [C]     queda [A] → [C]
 Cola:        [A] → [B] → [C]     queda [A] → [B] (cola ahora es B)
 ```
 
-- `buscar`, `insertarDespuesDe` y `eliminar`: O(n) en el peor caso, porque recorren la lista.
-- Eliminar la cola también es O(n): aunque tenemos `cola`, necesitamos recorrer desde `cabeza` para encontrar el nodo anterior y actualizar su enlace.
+- `buscar`, `insertarDespuesDe` y `eliminar` pueden ser O(n), porque quizá hay que recorrer muchos nodos para encontrar el dato.
+- Eliminar la cola también puede tardar O(n). Aunque guardamos `cola`, la lista solo tiene enlaces hacia adelante. Para cambiar `cola`, tengo que recorrer desde `cabeza` y encontrar el nodo anterior.
 
-## Lista enlazada y arreglo
+## Comparar lista enlazada y arreglo
 
-Complejidad de las operaciones (n es la cantidad de atenciones):
+Esta tabla muestra cuánto tardan algunas operaciones. `n` es la cantidad de atenciones:
 
 | Operación | Lista enlazada | Arreglo |
 | --- | --- | --- |
@@ -71,36 +71,36 @@ Complejidad de las operaciones (n es la cantidad de atenciones):
 | Buscar un dato | O(n) | O(n) |
 | Eliminar la primera | O(1), se mueve `cabeza` al siguiente nodo | O(n), se desplazan los elementos |
 
-## Cola de recepción (FIFO)
+## La cola de recepción (FIFO)
 
-Después de encolar a las tres mascotas:
+En este dibujo puse tres mascotas en la cola:
 
 ```text
 frente → [Lola] → [Toby] → [Mía] ← final
 ```
 
-Después de llamar a Lola y desencolar una vez:
+Después llamé a Lola y la saqué de la cola:
 
 ```text
 frente → [Toby] → [Mía] ← final
 ```
 
-## Comparación de cola y arreglo
+## Medición de cola y arreglo
 
-Medí 100.000 turnos con `node pruebas/comparar-cola.js`:
+Probé 100.000 turnos con `node pruebas/comparar-cola.js`. Estos fueron los tiempos de esa ejecución:
 
 | Operación | Cola enlazada | Arreglo |
 | --- | ---: | ---: |
 | Encolar (`encolar` / `push`) | 5,60 ms | 2,23 ms |
 | Desencolar (`desencolar` / `shift`) | 3,07 ms | 612,16 ms |
 
-En esta ejecución, `shift()` tardó mucho más porque desplaza los elementos restantes. Los tiempos pueden cambiar según el computador y la carga del sistema.
+En mi prueba, `shift()` tardó más porque mueve los otros elementos del arreglo. Los tiempos pueden cambiar según el computador y lo que esté haciendo.
 
-`encolar` y `desencolar` en la cola enlazada son O(1). En el arreglo, `push` es O(1) amortizado, pero `shift` es O(n): mueve los demás turnos para dejar libre el primer lugar. Por eso la cola enlazada desencola más rápido cuando hay muchos turnos.
+En la cola enlazada, `encolar` y `desencolar` son O(1). En el arreglo, `push` es O(1) amortizado, pero `shift` es O(n), porque mueve los turnos que quedan. Por eso la cola enlazada fue más rápida al sacar muchos turnos en esta prueba.
 
 ## Simulación del sábado
 
-Cada consulta dura 20 minutos. Solo entra alguien que ya llegó; entre quienes esperan, pasan primero las urgencias y se respeta el orden de llegada.
+En la simulación cada consulta dura 20 minutos. Solo atiendo a las mascotas que ya llegaron. Si hay una urgencia esperando, pasa antes que una consulta general.
 
 | Inicio | Mascota | Por qué sigue |
 | --- | --- | --- |
@@ -112,15 +112,15 @@ Cada consulta dura 20 minutos. Solo entra alguien que ya llegó; entre quienes e
 | 9:40 | Simón | Siguiente consulta general. |
 | 10:00 | Nala | Última consulta general. |
 
-Así, aunque Max llegó antes que Luna, las urgencias que ya estaban esperando pasan primero.
+Por eso Max espera aunque llegó antes que Luna: Luna es una urgencia y ya había llegado.
 
-## Pila para deshacer y rehacer
+## La pila para deshacer y rehacer
 
-La hice con nodos. `apilar`, `desapilar`, `verTope`, `estaVacia` y `tamanio` son O(1): consultan o cambian el tope y el contador.
+También hice una pila con nodos. `apilar`, `desapilar`, `verTope`, `estaVacia` y `tamanio` son O(1), porque solo consultan o cambian el tope y el contador.
 
-## Prueba rápida de deshacer y rehacer
+## Mi prueba de deshacer y rehacer
 
-Tope a la izquierda. `+` agrega y `−` elimina.
+El tope de cada pila está a la izquierda. `+` quiere decir agregar y `−` quiere decir eliminar.
 
 | Paso | Acción | Deshacer | Rehacer |
 | --- | --- | --- | --- |
@@ -133,10 +133,11 @@ Tope a la izquierda. `+` agrega y `−` elimina.
 | 7 | Agregar C | C+, B+, A+ | — |
 | 8 | Rehacer | C+, B+, A+ | — |
 
-Agregar C borra lo que quedaba por rehacer. Lo comprobé en `pruebas/editor.js`.
+Cuando agrego C, se borra lo que quedaba en la pila de rehacer. Lo probé en `pruebas/editor.js`.
 
-## Estructuras del motor
+## Las estructuras del motor
 
+Esta tabla resume para qué uso cada estructura y cuánto tardan sus operaciones:
 | Estructura | Principio | Uso en Patitas | Operaciones principales |
 | --- | --- | --- | --- |
 | `Nodo` y lista enlazada | Secuencial | Guardan las atenciones de cada mascota | Agregar al inicio/final: O(1); buscar, eliminar y recorrer: O(n) |

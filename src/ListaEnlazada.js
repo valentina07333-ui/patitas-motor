@@ -1,4 +1,4 @@
-const Nodo = require('./Nodo');
+let Nodo = require('./Nodo');
 
 class ListaEnlazada {
   constructor() {
@@ -8,7 +8,7 @@ class ListaEnlazada {
   }
 
   agregarAlFinal(dato) {
-    const nuevo = new Nodo(dato);
+    let nuevo = new Nodo(dato);
 
     if (this.cabeza === null) {
       this.cabeza = nuevo;
@@ -22,7 +22,7 @@ class ListaEnlazada {
   }
 
   agregarAlInicio(dato) {
-    const nuevo = new Nodo(dato);
+    let nuevo = new Nodo(dato);
 
     if (this.cabeza === null) {
       this.cabeza = nuevo;
@@ -34,6 +34,7 @@ class ListaEnlazada {
 
     this.tamanio++;
   }
+
   estaVacia() {
     return this.tamanio === 0;
   }
@@ -69,7 +70,7 @@ class ListaEnlazada {
 
     while (actual !== null) {
       if (condicion(actual.dato)) {
-        const nuevo = new Nodo(dato);
+        let nuevo = new Nodo(dato);
         nuevo.siguiente = actual.siguiente;
         actual.siguiente = nuevo;
 
@@ -114,8 +115,10 @@ class ListaEnlazada {
   }
 
   aArreglo() {
-    const datos = [];
-    this.recorrer((dato) => datos.push(dato));
+    let datos = [];
+    this.recorrer(function (dato) {
+      datos.push(dato);
+    });
     return datos;
   }
 }

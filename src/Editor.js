@@ -1,31 +1,45 @@
-const Pila = require('./Pila');
-const RegistroClinico = require('./RegistroClinico');
+let Pila = require('./Pila');
+let RegistroClinico = require('./RegistroClinico');
 
 class Editor {
-  constructor(registro = new RegistroClinico()) {
-    this.registro = registro;
+  constructor(registro) {
+    if (registro === undefined) {
+      this.registro = new RegistroClinico();
+    } else {
+      this.registro = registro;
+    }
+
     this.deshacerPila = new Pila();
     this.rehacerPila = new Pila();
   }
 
   agregar(mascota, atencion) {
     this.registro.registrarAtencion(mascota, atencion);
+
+    let editor = this;
     this.deshacerPila.apilar({
       tipo: 'agregar',
-      mascota,
-      atencion,
-      revertir: () => {
-        this.registro.obtenerHistorial(mascota).eliminar((dato) => dato === atencion);
+      mascota: mascota,
+      atencion: atencion,
+      revertir: function () {
+        let historial = editor.registro.obtenerHistorial(mascota);
+        historial.eliminar(function (dato) {
+          return dato === atencion;
+        });
       },
-      reaplicar: () => this.registro.registrarAtencion(mascota, atencion),
+      reaplicar: function () {
+        editor.registro.registrarAtencion(mascota, atencion);
+      },
     });
     this.rehacerPila = new Pila();
     return atencion;
   }
 
   eliminar(mascota, condicion) {
-    const historial = this.registro.obtenerHistorial(mascota);
-    if (historial === null) return null;
+    let historial = this.registro.obtenerHistorial(mascota);
+    if (historial === null) {
+      return null;
+    }
 
     let actual = historial.cabeza;
     let anterior = null;
@@ -35,25 +49,41 @@ class Editor {
       actual = actual.siguiente;
     }
 
-    if (actual === null) return null;
+    if (actual === null) {
+      return null;
+    }
 
-    const atencion = historial.eliminar((dato) => dato === actual.dato);
-    const datoAnterior = anterior === null ? null : anterior.dato;
+    let atencionEncontrada = actual.dato;
+    let atencion = historial.eliminar(function (dato) {
+      return dato === atencionEncontrada;
+    });
+    let datoAnterior = null;
+    if (anterior !== null) {
+      datoAnterior = anterior.dato;
+    }
+
+    let editor = this;
+
     this.deshacerPila.apilar({
       tipo: 'eliminar',
-      mascota,
-      atencion,
+      mascota: mascota,
+      atencion: atencion,
       anterior: datoAnterior,
-      revertir: () => {
-        const lista = this.registro.obtenerHistorial(mascota);
+      revertir: function () {
+        let lista = editor.registro.obtenerHistorial(mascota);
         if (datoAnterior === null) {
           lista.agregarAlInicio(atencion);
         } else {
-          lista.insertarDespuesDe((dato) => dato === datoAnterior, atencion);
+          lista.insertarDespuesDe(function (dato) {
+            return dato === datoAnterior;
+          }, atencion);
         }
       },
-      reaplicar: () => {
-        this.registro.obtenerHistorial(mascota).eliminar((dato) => dato === atencion);
+      reaplicar: function () {
+        let lista = editor.registro.obtenerHistorial(mascota);
+        lista.eliminar(function (dato) {
+          return dato === atencion;
+        });
       },
     });
     this.rehacerPila = new Pila();
@@ -61,8 +91,10 @@ class Editor {
   }
 
   deshacer() {
-    const accion = this.deshacerPila.desapilar();
-    if (accion === null) return false;
+    let accion = this.deshacerPila.desapilar();
+    if (accion === null) {
+      return false;
+    }
 
     accion.revertir();
 
@@ -71,8 +103,10 @@ class Editor {
   }
 
   rehacer() {
-    const accion = this.rehacerPila.desapilar();
-    if (accion === null) return false;
+    let accion = this.rehacerPila.desapilar();
+    if (accion === null) {
+      return false;
+    }
 
     accion.reaplicar();
 

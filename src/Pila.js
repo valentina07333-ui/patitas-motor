@@ -1,4 +1,4 @@
-const Nodo = require('./Nodo');
+let Nodo = require('./Nodo');
 
 class Pila {
   constructor() {
@@ -7,7 +7,7 @@ class Pila {
   }
 
   apilar(dato) {
-    const nuevo = new Nodo(dato);
+    let nuevo = new Nodo(dato);
     nuevo.siguiente = this.tope;
     this.tope = nuevo;
     this._tamanio++;
@@ -18,14 +18,18 @@ class Pila {
       return null;
     }
 
-    const dato = this.tope.dato;
+    let dato = this.tope.dato;
     this.tope = this.tope.siguiente;
     this._tamanio--;
     return dato;
   }
 
   verTope() {
-    return this.tope === null ? null : this.tope.dato;
+    if (this.tope === null) {
+      return null;
+    }
+
+    return this.tope.dato;
   }
 
   estaVacia() {

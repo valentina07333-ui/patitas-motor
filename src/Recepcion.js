@@ -1,4 +1,4 @@
-const Cola = require('./Cola');
+let Cola = require('./Cola');
 
 class Recepcion {
   constructor() {
@@ -20,7 +20,7 @@ class Recepcion {
       return null;
     }
 
-    if (!this.urgencias.estaVacia()) {
+    if (this.urgencias.estaVacia() === false) {
       return this.urgencias.desencolar();
     }
 
