@@ -1,3 +1,4 @@
+const assert = require('node:assert/strict');
 const Nodo = require('../src/Nodo');
 
 const lola = {
@@ -44,7 +45,22 @@ while (actual !== null) {
   costoTotal += actual.dato.costo;
   actual = actual.siguiente;
 }
-console.log('Costo total del historial:', costoTotal);
+console.log(
+  'Costo total del historial:',
+  `$${new Intl.NumberFormat('es-CO').format(costoTotal)}`,
+);
+
+nodoVacunacion.siguiente = null;
+let atencionesAlcanzables = 0;
+actual = cabeza;
+while (actual !== null) {
+  atencionesAlcanzables++;
+  actual = actual.siguiente;
+}
+assert.equal(atencionesAlcanzables, 1);
+console.log(
+  'Atenciones alcanzables después de perder el enlace:',
+  atencionesAlcanzables,
+);
 
 module.exports = { lola, nodoVacunacion, nodoControlPeso, nodoLimpiezaDental, cabeza, costoTotal };
-

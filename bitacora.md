@@ -6,7 +6,15 @@ La lista va de la atención más antigua a la más reciente:
 cabeza → [Vacunación, 02/02] → [Control de peso, 15/03] → [Limpieza dental, 20/05] → null
 ```
 
-Si `nodoVacunacion.siguiente` queda en `null`, desde `cabeza` solo se llega a la vacunación. Las otras atenciones siguen ahí, pero quedaron desconectadas.
+En `pruebas/nodos.js` se recorre primero la cadena completa y se calcula el total. Después se asigna `null` a `nodoVacunacion.siguiente` a propósito. El recorrido desde `cabeza` alcanza entonces solo un nodo: el control de peso y la limpieza dental siguen existiendo en memoria, pero ya no hay referencias desde la cabeza que permitan llegar a ellos.
+
+```text
+Antes:    cabeza → [Vacunación] → [Control] → [Limpieza] → null
+Después:  cabeza → [Vacunación] → null
+                       [Control] → [Limpieza] → null  (desconectados)
+```
+
+La prueba comprueba que tras perder el enlace queda una sola atención alcanzable. La ejecución inicial imprime las tres atenciones y el total `$275.000` antes de modificar el enlace.
 
 ## Agregar una atención
 
@@ -50,6 +58,18 @@ Cola:        [A] → [B] → [C]     queda [A] → [B] (cola ahora es B)
 
 - `buscar`, `insertarDespuesDe` y `eliminar`: O(n) en el peor caso, porque recorren la lista.
 - Eliminar la cola también es O(n): aunque tenemos `cola`, necesitamos recorrer desde `cabeza` para encontrar el nodo anterior y actualizar su enlace.
+
+## Lista enlazada y arreglo
+
+Complejidad de las operaciones (n es la cantidad de atenciones):
+
+| Operación | Lista enlazada | Arreglo |
+| --- | --- | --- |
+| Agregar al final | O(1), usando `cola` | O(1) amortizado |
+| Agregar al inicio | O(1), se actualiza `cabeza` | O(n), se desplazan los elementos |
+| Acceder a la atención k | O(n), se recorre desde `cabeza` | O(1) |
+| Buscar un dato | O(n) | O(n) |
+| Eliminar la primera | O(1), se mueve `cabeza` al siguiente nodo | O(n), se desplazan los elementos |
 
 ## Cola de recepción (FIFO)
 

@@ -19,6 +19,7 @@ node src/simulacion.js
 ## Pruebas y comparación
 
 ```bash
+node pruebas/nodos.js
 node pruebas/lista.js
 node pruebas/cola.js
 node pruebas/recepcion.js
@@ -26,6 +27,8 @@ node pruebas/pila.js
 node pruebas/editor.js
 node pruebas/comparar-cola.js
 ```
+
+`pruebas/nodos.js` muestra la cadena enlazada manualmente de Lola, calcula su costo total y demuestra cómo se trunca el recorrido al perder un enlace.
 
 ## Estructuras
 
@@ -46,4 +49,4 @@ Complejidad de las operaciones principales (n es la cantidad de atenciones):
 | Acceder por posición | O(n) | O(1) |
 | Agregar al inicio | O(1) | O(n) |
 | Agregar al final | O(1) con `cola` | O(1) amortizado |
-| Eliminar el último | O(n), hay que buscar el anterior | O(1) |
+| Eliminar la primera | O(1), se mueve `cabeza` al siguiente nodo | O(n), se desplazan los elementos |
