@@ -139,11 +139,12 @@ Cuando agrego C, se borra lo que quedaba en la pila de rehacer. Lo probé en `pr
 
 ## Las estructuras del motor
 
-Esta tabla resume para qué uso cada estructura y cuánto tardan sus operaciones:
+Esta tabla resume el principio de cada estructura, para qué la uso y cuánto tardan sus operaciones principales. El `Map` se organiza por clave, así que no sigue un orden FIFO, LIFO ni secuencial.
+
 | Estructura | Principio | Uso en Patitas | Operaciones principales |
 | --- | --- | --- | --- |
-| `Nodo` y lista enlazada | Secuencial | Guardan las atenciones de cada mascota | Agregar al inicio/final: O(1); buscar, eliminar y recorrer: O(n) |
+| `Nodo` y lista enlazada | Secuencial | Guardan en orden las atenciones de cada mascota | Agregar al inicio/final: O(1); buscar y recorrer: O(n); eliminar por dato: O(n) |
 | `Cola` | FIFO | Ordena los turnos por llegada | Encolar y desencolar: O(1) |
 | `Pila` | LIFO | Guarda acciones para deshacer y rehacer | Apilar, desapilar y ver el tope: O(1) |
-| `Map` en `RegistroClinico` | Acceso por clave | Encuentra el historial de cada mascota | Guardar y buscar historial: O(1) promedio |
-| Arreglo | Secuencial por posición | Comparación con la cola enlazada | `push`: O(1) amortizado; `shift`: O(n) |
+| `Map` en `RegistroClinico` | Acceso por clave (no aplica FIFO/LIFO/secuencial) | Relaciona cada mascota con su historial | Guardar y buscar historial: O(1) promedio |
+| Arreglo (comparación) | Secuencial por posición | Compara el costo de manejar turnos con una cola | `push`: O(1) amortizado; `shift`: O(n) |

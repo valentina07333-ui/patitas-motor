@@ -2,6 +2,13 @@
 
 Patitas Motor guarda historiales clínicos y organiza los turnos de una clínica veterinaria. Usa listas enlazadas para las atenciones, colas para respetar la prioridad de urgencias y pilas para deshacer o rehacer cambios.
 
+## Novedades de v0.2
+
+- La simulación muestra al terminar el orden de atención, las horas de llegada e inicio, los tiempos de espera y sus promedios.
+- Al final también imprime los historiales clínicos actualizados de todas las mascotas atendidas.
+- Si se intenta llamar un turno con la sala vacía, recepción muestra un aviso y devuelve `null` sin fallar.
+- La [bitácora](./bitacora.md) documenta las estructuras, sus principios y las complejidades de sus operaciones principales.
+
 ## Ejecutar
 
 Necesitas Node.js. Desde la carpeta del proyecto, puedes ejecutar el reporte de historiales:
@@ -15,6 +22,8 @@ Para simular la mañana del sábado —con llegadas, prioridad de urgencias, tie
 ```bash
 node src/simulacion.js
 ```
+
+La simulación incluye el reporte y los historiales actualizados al finalizar la jornada.
 
 ## Pruebas y comparación
 
