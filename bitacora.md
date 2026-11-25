@@ -100,19 +100,21 @@ En la cola enlazada, `encolar` y `desencolar` son O(1). En el arreglo, `push` es
 
 ## Simulación del sábado
 
-En la simulación cada consulta dura 20 minutos. Solo atiendo a las mascotas que ya llegaron. Si hay una urgencia esperando, pasa antes que una consulta general.
+Antes de programar, hice este cálculo a mano. Cada consulta dura 20 minutos. En cada hora de inicio solo cuento a las mascotas que ya llegaron; si hay una urgencia esperando, la atiendo antes que a una consulta general.
 
-| Inicio | Mascota | Por qué sigue |
-| --- | --- | --- |
-| 8:00 | Toby | Llegó a las 8:00; no hay nadie más. |
-| 8:20 | Luna | Ya llegó y es urgencia. |
-| 8:40 | Kira | Es la siguiente urgencia; llegó a las 8:25. |
-| 9:00 | Rocky | Llegó a las 9:00 y es urgencia. |
-| 9:20 | Max | Ya no quedan urgencias; es el general que llegó primero. |
-| 9:40 | Simón | Siguiente consulta general. |
-| 10:00 | Nala | Última consulta general. |
+| Llega | Inicio | Mascota | Espera | Por qué sigue |
+| --- | --- | --- | ---: | --- |
+| 8:00 | 8:00 | Toby | 0 min | Ya llegó; no hay otros turnos esperando. |
+| 8:10 | 8:20 | Luna | 10 min | Ya llegó y es urgencia; Toby termina a las 8:20. |
+| 8:25 | 8:40 | Kira | 15 min | Ya llegó y es la siguiente urgencia; Luna termina a las 8:40. |
+| 9:00 | 9:00 | Rocky | 0 min | Llega justo cuando Kira termina y es urgencia. |
+| 8:05 | 9:20 | Max | 75 min | Ya no quedan urgencias; es el general que llegó primero. |
+| 8:20 | 9:40 | Simón | 80 min | Max ya pasó; Simón es el siguiente general que llegó. |
+| 8:40 | 10:00 | Nala | 80 min | Es la última consulta general que queda. |
 
-Por eso Max espera aunque llegó antes que Luna: Luna es una urgencia y ya había llegado.
+Al comparar esta tabla con la salida de `node src/simulacion.js`, el orden, las horas de inicio y las esperas coinciden. Encontré un error en mi primer cálculo: había anotado que Luna llegó a las 8:05. Mi hipótesis es que copié la hora de Max por equivocación. La corregí a las 8:10, que es la hora de la tabla de llegadas; el inicio de Luna sigue siendo 8:20 y su espera es 10 minutos. No encontré diferencias en el resultado del programa.
+
+Max espera aunque llegó antes que Luna porque Luna ya llegó y es una urgencia.
 
 ## La pila para deshacer y rehacer
 
