@@ -17,7 +17,7 @@ class Editor {
     this.registro.registrarAtencion(mascota, atencion);
 
     let editor = this;
-    this.deshacerPila.apilar({
+    let accion = {
       tipo: 'agregar',
       mascota: mascota,
       atencion: atencion,
@@ -30,7 +30,8 @@ class Editor {
       reaplicar: function () {
         editor.registro.registrarAtencion(mascota, atencion);
       },
-    });
+    };
+    this.deshacerPila.apilar(accion);
     this.rehacerPila = new Pila();
     return atencion;
   }
@@ -44,7 +45,11 @@ class Editor {
     let actual = historial.cabeza;
     let anterior = null;
 
-    while (actual !== null && !condicion(actual.dato)) {
+    while (actual !== null) {
+      if (condicion(actual.dato)) {
+        break;
+      }
+
       anterior = actual;
       actual = actual.siguiente;
     }
@@ -64,7 +69,7 @@ class Editor {
 
     let editor = this;
 
-    this.deshacerPila.apilar({
+    let accion = {
       tipo: 'eliminar',
       mascota: mascota,
       atencion: atencion,
@@ -85,7 +90,8 @@ class Editor {
           return dato === atencion;
         });
       },
-    });
+    };
+    this.deshacerPila.apilar(accion);
     this.rehacerPila = new Pila();
     return atencion;
   }

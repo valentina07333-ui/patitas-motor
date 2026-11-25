@@ -87,10 +87,11 @@ for (let j = 0; j < mascotas.length; j++) {
 
   console.log('\nHistorial de ' + mascota + ':');
   historial.recorrer(function (atencion) {
-    console.log(
-      atencion.fecha + ' | ' + atencion.motivo + ' | ' + atencion.veterinario +
-      ' | $' + formatoCosto.format(atencion.costo),
-    );
+    let lineaAtencion = atencion.fecha + ' | ';
+    lineaAtencion = lineaAtencion + atencion.motivo + ' | ';
+    lineaAtencion = lineaAtencion + atencion.veterinario + ' | $';
+    lineaAtencion = lineaAtencion + formatoCosto.format(atencion.costo);
+    console.log(lineaAtencion);
     costoTotal += atencion.costo;
   });
 

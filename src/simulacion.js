@@ -19,9 +19,23 @@ function aMinutos(hora) {
 }
 
 function aHora(minutos) {
-  let horas = String(Math.floor(minutos / 60)).padStart(2, '0');
-  let resto = String(minutos % 60).padStart(2, '0');
-  return horas + ':' + resto;
+  let horas = Math.floor(minutos / 60);
+  let resto = minutos % 60;
+
+  if (horas < 10) {
+    horas = '0' + horas;
+  } else {
+    horas = String(horas);
+  }
+
+  if (resto < 10) {
+    resto = '0' + resto;
+  } else {
+    resto = String(resto);
+  }
+
+  let horaCompleta = horas + ':' + resto;
+  return horaCompleta;
 }
 
 let recepcion = new Recepcion();
@@ -113,11 +127,14 @@ while (
 console.log('Reporte de atención:');
 for (let indice = 0; indice < reporteAtencion.length; indice++) {
   let atencion = reporteAtencion[indice];
-  console.log(
-    (indice + 1) + '. ' + atencion.mascota + ' (' + atencion.tipo + ') | llegó ' +
-    atencion.horaLlegada + ' | atención ' + atencion.horaAtencion + ' | espera ' +
-    atencion.esperaMinutos + ' min | ' + atencion.motivo,
-  );
+  let numero = indice + 1;
+  let lineaReporte = numero + '. ';
+  lineaReporte = lineaReporte + atencion.mascota + ' (' + atencion.tipo + ')';
+  lineaReporte = lineaReporte + ' | llegó ' + atencion.horaLlegada;
+  lineaReporte = lineaReporte + ' | atención ' + atencion.horaAtencion;
+  lineaReporte = lineaReporte + ' | espera ' + atencion.esperaMinutos + ' min';
+  lineaReporte = lineaReporte + ' | ' + atencion.motivo;
+  console.log(lineaReporte);
 }
 
 let tipos = Object.keys(esperas);
