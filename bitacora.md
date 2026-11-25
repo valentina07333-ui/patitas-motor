@@ -118,7 +118,7 @@ Max espera aunque llegó antes que Luna porque Luna ya llegó y es una urgencia.
 
 ## La pila para deshacer y rehacer
 
-También hice una pila con nodos. `apilar`, `desapilar`, `verTope`, `estaVacia` y `tamanio` son O(1), porque solo consultan o cambian el tope y el contador.
+También hice una pila con nodos y reutilicé `Nodo`. Elegí los nodos porque ya los tenía en el proyecto y así puedo agregar o quitar el nodo del tope sin mover los demás, como pasaría al usar ciertas operaciones de un arreglo. `apilar`, `desapilar`, `verTope`, `estaVacia` y `tamanio` son O(1), porque solo consultan o cambian el tope y el contador.
 
 ## Mi prueba de deshacer y rehacer
 
