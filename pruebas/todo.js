@@ -6,7 +6,7 @@ let Pila = require('../src/estructuras/Pila');
 let RegistroClinico = require('../src/dominio/RegistroClinico');
 let Recepcion = require('../src/dominio/Recepcion');
 let Editor = require('../src/dominio/Editor');
-let catalogoModulo = require('../src/catalogo');
+let catalogoModulo = require('../src/dominio/catalogo');
 
 let fallas = 0;
 
@@ -20,10 +20,15 @@ function probar(nombre, prueba) {
   }
 }
 
-probar('Nodo: dato y enlace inicial', function () {
+probar('Nodo: enlace nulo inicial y enlace entre nodos', function () {
   let nodo = new Nodo('A');
   assert.equal(nodo.dato, 'A');
   assert.equal(nodo.siguiente, null);
+
+  let siguiente = new Nodo('B');
+  nodo.siguiente = siguiente;
+  assert.equal(nodo.siguiente, siguiente);
+  assert.equal(nodo.siguiente.dato, 'B');
 });
 
 probar('Lista enlazada: operaciones y lista vacía', function () {

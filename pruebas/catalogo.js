@@ -1,5 +1,5 @@
 let assert = require('node:assert/strict');
-let catalogoModulo = require('../src/catalogo');
+let catalogoModulo = require('../src/dominio/catalogo');
 
 function copiarCatalogo(categoria) {
   return JSON.parse(JSON.stringify(categoria));
