@@ -18,7 +18,7 @@ let catalogo = {
           subcategorias: [
             {
               nombre: 'Oftalmología',
-              servicios: [{ nombre: 'Examen ocular', precio: 70000 }],
+              servicios: [{ nombre: 'Examen ocular', precio: 160000 }],
               subcategorias: [],
             },
           ],
@@ -99,9 +99,86 @@ function profundidad(categoria) {
   return profundidadMaxima + 1;
 }
 
+function buscarServicio(categoria, nombre) {
+  for (let servicio of categoria.servicios) {
+    if (servicio.nombre === nombre) {
+      return servicio;
+    }
+  }
+
+  for (let subcategoria of categoria.subcategorias) {
+    let encontrado = buscarServicio(subcategoria, nombre);
+    if (encontrado !== null) {
+      return encontrado;
+    }
+  }
+
+  return null;
+}
+
+function rutaDeServicio(categoria, nombre) {
+  function buscarRuta(actual, ruta) {
+    let rutaActual = ruta.concat(actual.nombre);
+
+    for (let servicio of actual.servicios) {
+      if (servicio.nombre === nombre) {
+        return rutaActual.concat(servicio.nombre);
+      }
+    }
+
+    for (let subcategoria of actual.subcategorias) {
+      let resultado = buscarRuta(subcategoria, rutaActual);
+      if (resultado !== null) {
+        return resultado;
+      }
+    }
+
+    return null;
+  }
+
+  return buscarRuta(categoria, []);
+}
+
+function sumarServicios(categoria) {
+  let total = 0;
+  for (let servicio of categoria.servicios) {
+    total += servicio.precio;
+  }
+
+  for (let subcategoria of categoria.subcategorias) {
+    total += sumarServicios(subcategoria);
+  }
+
+  return total;
+}
+
+function precioPaquete(categoria) {
+  return sumarServicios(categoria) * 0.9;
+}
+
+function serviciosEnRango(categoria, min, max) {
+  let resultado = [];
+
+  for (let servicio of categoria.servicios) {
+    if (servicio.precio >= min && servicio.precio <= max) {
+      resultado.push(servicio);
+    }
+  }
+
+  for (let subcategoria of categoria.subcategorias) {
+    resultado = resultado.concat(serviciosEnRango(subcategoria, min, max));
+  }
+
+  return resultado;
+}
+
 module.exports = {
   catalogo: catalogo,
+  buscarServicio: buscarServicio,
   contarServicios: contarServicios,
+  precioPaquete: precioPaquete,
   listarCatalogo: listarCatalogo,
   profundidad: profundidad,
+  rutaDeServicio: rutaDeServicio,
+  serviciosEnRango: serviciosEnRango,
 };

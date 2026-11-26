@@ -160,3 +160,11 @@ Antes de programar, definí para cada recorrido recursivo:
 | `profundidad(categoria)` | Una categoría sin subcategorías tiene profundidad 1 | Calcula la profundidad de cada subcategoría | Devuelve 1 más la profundidad máxima de las ramas |
 
 `nivel` empieza en 0 para la raíz. El catálogo original tiene 9 servicios y 3 niveles. Al agregar Oftalmología bajo Consultas › Especializada, el recorrido encuentra un servicio adicional y una profundidad de 4 sin cambiar las funciones.
+
+## MiniReto 10: rutas, búsquedas y paquetes
+
+`buscarServicio` revisa los servicios locales y retorna inmediatamente al encontrar la coincidencia; si no está en esta categoría, reduce el problema recorriendo sus subcategorías. `rutaDeServicio` usa un arreglo nuevo por rama para construir la ruta sin modificar la de otras búsquedas. Si no encuentra el nombre, devuelve `null`. `serviciosEnRango` concatena los resultados de todas las ramas e incluye ambos límites.
+
+`precioPaquete` separa la suma recursiva del descuento: primero suma todos los precios y después aplica el 10 % una única vez. En Cirugías, los servicios suman $780.000 y el total correcto es $702.000. Si se aplicara el descuento en cada nivel, Esterilización daría $567.000 y Limpieza dental $135.000; luego Cirugías descontaría otra vez esos $702.000 y cobraría $631.800. Ese descuento repetido es incorrecto porque el paquete debe descontar el total completo una sola vez.
+
+Las pruebas buscan `Consulta general` (servicio de una rama superficial), `Gata` (rama profunda) y `Peluquería` (inexistente); también comprueban que la búsqueda corta al hallar un resultado, la categoría vacía, la ruta exacta de Gata, el paquete de Cirugías y los cinco servicios del rango de $80.000 a $150.000.
