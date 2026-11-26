@@ -53,10 +53,7 @@ También se pueden ejecutar las pruebas detalladas originales:
 
 ```bash
 node pruebas/nodos.js
-node pruebas/lista.js
-node pruebas/cola.js
 node pruebas/recepcion.js
-node pruebas/pila.js
 node pruebas/editor.js
 node pruebas/comparar-cola.js
 ```

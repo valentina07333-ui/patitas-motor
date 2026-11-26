@@ -30,25 +30,44 @@ probar('Lista enlazada: operaciones y lista vacía', function () {
   let lista = new ListaEnlazada();
   assert.equal(lista.buscar(function () { return true; }), null);
   assert.equal(lista.eliminar(function () { return true; }), null);
+  assert.equal(lista.insertarDespuesDe(function () { return true; }, 'X'), false);
   lista.agregarAlFinal({ costo: 10 });
   lista.agregarAlFinal({ costo: 20 });
-  assert.equal(lista.obtenerTamanio(), 2);
-  assert.equal(lista.tamanioRecursivo(), 2);
-  assert.equal(lista.costoTotalRecursivo(), 30);
+  lista.agregarAlInicio({ costo: 5 });
+  assert.equal(lista.obtenerTamanio(), 3);
+  assert.equal(lista.cabeza.dato.costo, 5);
+  assert.equal(lista.cola.dato.costo, 20);
+  assert.equal(lista.tamanioRecursivo(), 3);
+  assert.equal(lista.costoTotalRecursivo(), 35);
   assert.equal(lista.buscar(function (dato) { return dato.costo === 20; }).costo, 20);
-  assert.equal(lista.eliminar(function (dato) { return dato.costo === 10; }).costo, 10);
-  assert.deepEqual(lista.aArreglo(), [{ costo: 20 }]);
+  assert.equal(lista.insertarDespuesDe(function (dato) {
+    return dato.costo === 20;
+  }, { costo: 30 }), true);
+  assert.equal(lista.cola.dato.costo, 30);
+  assert.equal(lista.eliminar(function (dato) { return dato.costo === 5; }).costo, 5);
+  assert.equal(lista.eliminar(function (dato) { return dato.costo === 30; }).costo, 30);
+  assert.deepEqual(lista.aArreglo(), [{ costo: 10 }, { costo: 20 }]);
+  assert.equal(lista.eliminar(function () { return true; }).costo, 10);
+  assert.equal(lista.eliminar(function () { return true; }).costo, 20);
+  assert.equal(lista.cabeza, null);
+  assert.equal(lista.cola, null);
 });
 
 probar('Cola FIFO: encolar, desencolar y cola vacía', function () {
   let cola = new Cola();
   assert.equal(cola.desencolar(), null);
+  cola.encolar('Único');
+  assert.equal(cola.desencolar(), 'Único');
+  assert.equal(cola.frente, null);
+  assert.equal(cola.final, null);
   cola.encolar('A');
   cola.encolar('B');
   assert.equal(cola.verFrente(), 'A');
+  assert.equal(cola.tamanio(), 2);
   assert.equal(cola.desencolar(), 'A');
   assert.equal(cola.desencolar(), 'B');
   assert.equal(cola.estaVacia(), true);
+  assert.equal(cola.tamanio(), 0);
 });
 
 probar('Pila LIFO: apilar, desapilar y pila vacía', function () {
