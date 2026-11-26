@@ -148,3 +148,15 @@ Esta tabla resume el principio de cada estructura, para qué la uso y cuánto ta
 | `Pila` | LIFO | Guarda acciones para deshacer y rehacer | Apilar, desapilar y ver el tope: O(1) |
 | `Map` en `RegistroClinico` | Acceso por clave (no aplica FIFO/LIFO/secuencial) | Relaciona cada mascota con su historial | Guardar y buscar historial: O(1) promedio |
 | Arreglo (comparación) | Secuencial por posición | Compara el costo de manejar turnos con una cola | `push`: O(1) amortizado; `shift`: O(n) |
+
+## MiniReto 9: catálogo anidado
+
+Antes de programar, definí para cada recorrido recursivo:
+
+| Función | Caso base | Reducción | Combinación |
+| --- | --- | --- | --- |
+| `contarServicios(categoria)` | Si no hay subcategorías, la suma de las ramas es 0 | Cuenta la lista local de servicios y llama la misma función para cada subcategoría | Suma los servicios locales y los totales recursivos |
+| `listarCatalogo(categoria, nivel)` | Una categoría sin subcategorías no hace más llamadas | Imprime la categoría y sus servicios; procesa cada subcategoría con `nivel + 1` | La salida de cada rama queda debajo de su padre con `" ".repeat(nivel * 2)` |
+| `profundidad(categoria)` | Una categoría sin subcategorías tiene profundidad 1 | Calcula la profundidad de cada subcategoría | Devuelve 1 más la profundidad máxima de las ramas |
+
+`nivel` empieza en 0 para la raíz. El catálogo original tiene 9 servicios y 3 niveles. Al agregar Oftalmología bajo Consultas › Especializada, el recorrido encuentra un servicio adicional y una profundidad de 4 sin cambiar las funciones.
