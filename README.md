@@ -40,6 +40,7 @@ La suite final muestra `OK` o `FALLA` para cada componente y devuelve un código
 
 ```bash
 node pruebas/todo.js
+node pruebas/lista.js
 ```
 
 Las pruebas específicas de recursión y catálogo, incluida la prueba controlada del límite de pila con 100.000 nodos, se ejecutan así:
