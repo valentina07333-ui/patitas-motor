@@ -1,5 +1,5 @@
 let assert = require('node:assert/strict');
-let Pila = require('../src/Pila');
+let Pila = require('../src/estructuras/Pila');
 
 let pila = new Pila();
 assert.equal(pila.estaVacia(), true);

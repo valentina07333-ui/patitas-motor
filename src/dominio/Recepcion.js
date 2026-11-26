@@ -1,4 +1,4 @@
-let Cola = require('./Cola');
+let Cola = require('../estructuras/Cola');
 
 class Recepcion {
   constructor() {

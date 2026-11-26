@@ -1,5 +1,5 @@
 let assert = require('node:assert/strict');
-let ListaEnlazada = require('../src/ListaEnlazada');
+let ListaEnlazada = require('../src/estructuras/ListaEnlazada');
 
 let historiales = new Map([
   [

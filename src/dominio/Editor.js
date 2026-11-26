@@ -1,4 +1,4 @@
-let Pila = require('./Pila');
+let Pila = require('../estructuras/Pila');
 let RegistroClinico = require('./RegistroClinico');
 
 class Editor {

@@ -1,5 +1,5 @@
-let Recepcion = require('./Recepcion');
-let Editor = require('./Editor');
+let Recepcion = require('./dominio/Recepcion');
+let Editor = require('./dominio/Editor');
 
 let llegadas = [
   { horaLlegada: '08:00', mascota: 'Toby', tipo: 'General', motivo: 'Control de vacunas' },
@@ -37,6 +37,11 @@ function aHora(minutos) {
   let horaCompleta = horas + ':' + resto;
   return horaCompleta;
 }
+
+function simularManana(mostrarReporte) {
+  if (mostrarReporte === undefined) {
+    mostrarReporte = true;
+  }
 
 let recepcion = new Recepcion();
 let editor = new Editor();
@@ -85,12 +90,18 @@ while (
     reporteAtencion.push(filaReporte);
 
     if (turnoEnAtencion.mascota === 'Toby') {
-      console.log('Error: la atención de Toby se registró en Max.');
+      if (mostrarReporte) {
+        console.log('Error: la atención de Toby se registró en Max.');
+      }
       editor.agregar('Max', atencion);
       editor.deshacer();
-      console.log('Se deshizo el registro equivocado.');
+      if (mostrarReporte) {
+        console.log('Se deshizo el registro equivocado.');
+      }
       editor.agregar('Toby', atencion);
-      console.log('La atención quedó registrada en Toby.');
+      if (mostrarReporte) {
+        console.log('La atención quedó registrada en Toby.');
+      }
     } else {
       editor.agregar(turnoEnAtencion.mascota, atencion);
     }
@@ -99,7 +110,10 @@ while (
     inicioAtencion = null;
   }
 
-  if (finAtencion === null) {
+  if (
+    finAtencion === null &&
+    (!recepcion.urgencias.estaVacia() || !recepcion.generales.estaVacia())
+  ) {
     let turno = recepcion.llamarSiguiente();
     if (turno !== null) {
       let llegada = aMinutos(turno.horaLlegada);
@@ -124,6 +138,7 @@ while (
   }
 }
 
+if (mostrarReporte) {
 console.log('Reporte de atención:');
 for (let indice = 0; indice < reporteAtencion.length; indice++) {
   let atencion = reporteAtencion[indice];
@@ -171,4 +186,18 @@ for (let j = 0; j < mascotas.length; j++) {
       atencion.tipo + ' | espera ' + atencion.esperaMinutos + ' min',
     );
   });
+}
+}
+
+return {
+  editor: editor,
+  reporteAtencion: reporteAtencion,
+  esperas: esperas,
+};
+}
+
+module.exports = simularManana;
+
+if (require.main === module) {
+  simularManana();
 }

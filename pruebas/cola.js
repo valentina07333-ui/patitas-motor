@@ -1,5 +1,5 @@
 let assert = require('node:assert/strict');
-let Cola = require('../src/Cola');
+let Cola = require('../src/estructuras/Cola');
 
 let cola = new Cola();
 

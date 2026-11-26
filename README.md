@@ -1,31 +1,55 @@
-# Patitas Motor
+# Patitas Motor v1.0
 
-Patitas Motor guarda historiales clínicos y organiza los turnos de una clínica veterinaria. Usa listas enlazadas para las atenciones, colas para respetar la prioridad de urgencias y pilas para deshacer o rehacer cambios.
+Patitas Motor es una demostración ejecutable del motor de una clínica veterinaria. Organiza los turnos, prioriza urgencias, mantiene historiales clínicos, permite corregir registros con deshacer/rehacer y consulta un catálogo jerárquico de servicios.
 
-## Novedades de v0.2
+No requiere dependencias externas; necesita Node.js.
 
-- La simulación muestra al terminar el orden de atención, las horas de llegada e inicio, los tiempos de espera y sus promedios.
-- Al final también imprime los historiales clínicos actualizados de todas las mascotas atendidas.
-- Si se intenta llamar un turno con la sala vacía, recepción muestra un aviso y devuelve `null` sin fallar.
-- La [bitácora](./bitacora.md) documenta las estructuras, sus principios y las complejidades de sus operaciones principales.
+## Ejecutar desde cero
 
-## Ejecutar
+Clona el repositorio y entra a su carpeta:
 
-Necesitas Node.js. Desde la carpeta del proyecto, puedes ejecutar el reporte de historiales:
+```bash
+git clone https://github.com/valentina07333-ui/patitas-motor.git
+cd patitas-motor
+```
+
+Ejecuta la demostración integrada:
+
+```bash
+node demo.js
+```
+
+La demostración presenta, en cinco secciones:
+
+1. El catálogo de servicios con su jerarquía y precios.
+2. La simulación de la mañana, con urgencias, orden de atención, horas y esperas.
+3. Una corrección de registro con deshacer y rehacer.
+4. Los historiales clínicos finales de las mascotas atendidas.
+5. La ruta de un servicio y el precio de un paquete con descuento.
+
+Para ejecutar por separado el reporte clínico o la simulación:
 
 ```bash
 node src/reporte.js
-```
-
-Para simular la mañana del sábado —con llegadas, prioridad de urgencias, tiempos de espera, registro de atenciones y corrección de un error— ejecuta:
-
-```bash
 node src/simulacion.js
 ```
 
-La simulación incluye el reporte y los historiales actualizados al finalizar la jornada.
+## Pruebas
 
-## Pruebas y comparación
+La suite final muestra `OK` o `FALLA` para cada componente y devuelve un código de error si alguna falla:
+
+```bash
+node pruebas/todo.js
+```
+
+Las pruebas específicas de recursión y catálogo, incluida la prueba controlada del límite de pila con 100.000 nodos, se ejecutan así:
+
+```bash
+node pruebas/catalogo.js
+node pruebas/recursiva.js
+```
+
+También se pueden ejecutar las pruebas detalladas originales:
 
 ```bash
 node pruebas/nodos.js
@@ -37,25 +61,43 @@ node pruebas/editor.js
 node pruebas/comparar-cola.js
 ```
 
-`pruebas/nodos.js` muestra la cadena enlazada manualmente de Lola, calcula su costo total y demuestra cómo se trunca el recorrido al perder un enlace.
+## Estructuras y módulos
 
-## Estructuras
+Los módulos están organizados en [src/estructuras](./src/estructuras) y [src/dominio](./src/dominio):
 
-- **Lista enlazada:** guarda en orden las atenciones de cada mascota.
-- **Map:** relaciona cada mascota con su historial.
-- **Colas FIFO:** separan urgencias y consultas generales; las urgencias pasan primero.
-- **Pilas LIFO:** permiten deshacer y rehacer acciones del registro.
+- **Nodo y lista enlazada:** conservan las atenciones de cada mascota en orden cronológico.
+- **Cola FIFO:** mantiene turnos de urgencias y consultas generales; recepción llama primero a las urgencias.
+- **Pila LIFO:** almacena acciones reversibles que usa el editor para deshacer y rehacer.
+- **Map:** relaciona el nombre de cada mascota con su historial.
+- **Arreglos:** guardan las listas de servicios y subcategorías del catálogo.
+- **Categorías recursivas:** cuentan, muestran, buscan y agrupan servicios sin limitar la profundidad.
+- **Editor:** registra y elimina atenciones; una nueva acción descarta la pila de rehacer.
 
-La bitácora incluye diagramas, decisiones y comparaciones de complejidad.
+La [bitácora](./bitacora.md) documenta las decisiones, trazas, complejidades y resultados de los MiniRetos.
 
-## Lista enlazada y arreglo
+## Complejidad de las operaciones
 
-Complejidad de las operaciones principales (n es la cantidad de atenciones):
+`n` es el número de elementos de una estructura; `C` el número de categorías; `S` el número de servicios; `h` la profundidad máxima del catálogo.
 
-| Operación | Lista enlazada | Arreglo |
-| --- | --- | --- |
-| Buscar un dato | O(n) | O(n) |
-| Acceder por posición | O(n) | O(1) |
-| Agregar al inicio | O(1) | O(n) |
-| Agregar al final | O(1) con `cola` | O(1) amortizado |
-| Eliminar la primera | O(1), se mueve `cabeza` al siguiente nodo | O(n), se desplazan los elementos |
+| Estructura | Operación | Tiempo | Memoria auxiliar |
+| --- | --- | --- | --- |
+| Nodo | Crear y acceder a dato/enlace | O(1) | O(1) |
+| Lista enlazada | Agregar al inicio o al final | O(1) | O(1) |
+| Lista enlazada | Tamaño (contador guardado) | O(1) | O(1) |
+| Lista enlazada | Recorrer, buscar, insertar después o eliminar por condición | O(n) | O(1) iterativa |
+| Lista enlazada | Convertir a arreglo | O(n) | O(n) |
+| Lista enlazada | Tamaño, costo o búsqueda recursivos | O(n) | O(n) pila de llamadas |
+| Lista enlazada | Imprimir al revés recursivamente | O(n) | O(n) pila de llamadas |
+| Cola enlazada | Encolar, desencolar, ver frente, consultar tamaño/vacía | O(1) | O(1) |
+| Pila enlazada | Apilar, desapilar, ver tope, consultar tamaño/vacía | O(1) | O(1) |
+| Map clínico | Guardar o buscar historial por mascota | O(1) promedio | O(1) auxiliar por operación; O(m) para guardar m historiales |
+| Editor | Agregar atención | O(1) | O(1) por acción |
+| Editor | Eliminar, deshacer o rehacer | O(n) peor caso | O(1) por acción, aparte del recorrido |
+| Catálogo recursivo | Contar, listar o calcular precio de paquete | O(C + S) | O(h) pila de llamadas |
+| Catálogo recursivo | Buscar, obtener ruta o filtrar por precio | O(C + S) | O(h), más el resultado |
+| Arreglo | Acceder por índice | O(1) | O(1) |
+| Arreglo | `push` al final | O(1) amortizado | O(1) auxiliar; puede crecer al redimensionar |
+| Arreglo | Recorrer o buscar | O(n) | O(1) auxiliar |
+| Arreglo | `shift` | O(n) | O(1) |
+
+Las operaciones recursivas de la lista usan O(n) memoria de pila y pueden exceder el límite del motor con listas grandes. Para tamaño, costo y búsqueda, el motor conserva como opción oficial la versión iterativa (el tamaño usa el contador O(1)).

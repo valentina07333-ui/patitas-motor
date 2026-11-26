@@ -163,7 +163,7 @@ Antes de programar, definí para cada recorrido recursivo:
 
 ## MiniReto 10: rutas, búsquedas y paquetes
 
-`buscarServicio` revisa los servicios locales y retorna inmediatamente al encontrar la coincidencia; si no está en esta categoría, reduce el problema recorriendo sus subcategorías. `rutaDeServicio` usa un arreglo nuevo por rama para construir la ruta sin modificar la de otras búsquedas. Si no encuentra el nombre, devuelve `null`. `serviciosEnRango` concatena los resultados de todas las ramas e incluye ambos límites.
+`buscarServicio` revisa los servicios locales y retorna inmediatamente al encontrar la coincidencia; si no está en esta categoría, reduce el problema recorriendo sus subcategorías. `rutaDeServicio` agrega cada categoría al arreglo de la ruta mientras desciende y la retira al regresar de una rama sin coincidencia; devuelve una copia de la ruta al encontrar el servicio. Si no encuentra el nombre, devuelve `null`. `serviciosEnRango` acumula en un único arreglo los resultados de todas las ramas e incluye ambos límites.
 
 `precioPaquete` separa la suma recursiva del descuento: primero suma todos los precios y después aplica el 10 % una única vez. En Cirugías, los servicios suman $780.000 y el total correcto es $702.000. Si se aplicara el descuento en cada nivel, Esterilización daría $567.000 y Limpieza dental $135.000; luego Cirugías descontaría otra vez esos $702.000 y cobraría $631.800. Ese descuento repetido es incorrecto porque el paquete debe descontar el total completo una sola vez.
 
@@ -183,3 +183,22 @@ Cada método recursivo usa una función auxiliar que recibe el nodo actual. En l
 | Imprimir al revés | O(n) usando un arreglo como pila auxiliar | O(n) | O(n) | O(n), mediante la pila de llamadas |
 
 Dejo como oficiales las versiones iterativas para tamaño, suma y búsqueda: las tres evitan consumir una llamada de pila por nodo; para tamaño, el contador ya ofrece O(1). Mantengo `imprimirAlReves()` recursivo porque el requisito es mostrar el orden inverso sin modificar enlaces ni usar estructuras auxiliares explícitas. Su costo de pila O(n) limita su uso con historiales extremadamente largos, igual que las demás operaciones recursivas.
+
+## Cierre: MiniRetos 1–12 y Patitas v1.0
+
+| MiniReto | Construcción | Estructura elegida y motivo |
+| --- | --- | --- |
+| 1. La consulta cero | Nodo y recorrido de una cadena | Nodo simple; enlaza un dato con el siguiente |
+| 2. El historial clínico como lista | Inserciones al inicio/final y enlaces cabeza/cola | Lista enlazada; inserta atenciones sin desplazar las existentes |
+| 3. Corregir el historial | Búsqueda, inserción y eliminación | Lista enlazada; permite localizar datos y reparar enlaces |
+| 4. Patitas v0.1 | Historiales por mascota y reporte | Map de historiales y listas de atenciones; acceso por clave y orden clínico |
+| 5. La sala de espera | Turnos en orden de llegada | Cola enlazada FIFO; encolar y desencolar en O(1) |
+| 6. Urgencias primero | Prioridad y paso del tiempo | Dos colas FIFO, una por tipo de turno |
+| 7. Deshacer y rehacer | Acciones reversibles | Dos pilas LIFO; la acción más reciente se revierte primero |
+| 8. Patitas v0.2 | Recepción integrada con historiales | Editor, pilas y colas; corrige errores y registra atenciones |
+| 9. El catálogo anidado | Conteo, listado y profundidad | Objetos con arreglos y recursión; se adapta a cualquier nivel |
+| 10. Rutas y paquetes | Búsqueda, rutas, rangos y descuentos | Recursión con retorno temprano y acumulación de resultados |
+| 11. El historial recursivo | Tamaño, suma, búsqueda e impresión inversa recursivos | Llamadas recursivas sobre nodos; se comparan con recorridos iterativos |
+| 12. Patitas v1.0 | Demostración, suite final, organización y documentación | Reutiliza las estructuras anteriores en módulos de estructuras y dominio |
+
+La demostración final se ejecuta con `node demo.js`; `node pruebas/todo.js` valida los componentes principales con mensajes `OK` o `FALLA`. El historial de Git conserva commits por los MiniRetos de construcción, con commits separados para los retos 9, 10, 11 y el lanzamiento 1.0.

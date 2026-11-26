@@ -1,4 +1,4 @@
-let ListaEnlazada = require('./ListaEnlazada');
+let ListaEnlazada = require('../estructuras/ListaEnlazada');
 
 class RegistroClinico {
   constructor() {

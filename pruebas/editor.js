@@ -1,5 +1,5 @@
 let assert = require('node:assert/strict');
-let Editor = require('../src/Editor');
+let Editor = require('../src/dominio/Editor');
 
 let editor = new Editor();
 assert.equal(editor.deshacer(), false);

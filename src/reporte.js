@@ -1,4 +1,4 @@
-let RegistroClinico = require('./RegistroClinico');
+let RegistroClinico = require('./dominio/RegistroClinico');
 
 let registro = new RegistroClinico();
 

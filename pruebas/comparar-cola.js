@@ -1,4 +1,4 @@
-let Cola = require('../src/Cola');
+let Cola = require('../src/estructuras/Cola');
 
 let cantidad = 100000;
 let turnos = [];

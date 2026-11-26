@@ -1,5 +1,5 @@
 let assert = require('node:assert/strict');
-let Recepcion = require('../src/Recepcion');
+let Recepcion = require('../src/dominio/Recepcion');
 
 let recepcion = new Recepcion();
 let mensajes = [];

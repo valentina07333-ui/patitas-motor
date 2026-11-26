@@ -118,21 +118,22 @@ function buscarServicio(categoria, nombre) {
 
 function rutaDeServicio(categoria, nombre) {
   function buscarRuta(actual, ruta) {
-    let rutaActual = ruta.concat(actual.nombre);
+    ruta.push(actual.nombre);
 
     for (let servicio of actual.servicios) {
       if (servicio.nombre === nombre) {
-        return rutaActual.concat(servicio.nombre);
+        return ruta.concat(servicio.nombre);
       }
     }
 
     for (let subcategoria of actual.subcategorias) {
-      let resultado = buscarRuta(subcategoria, rutaActual);
+      let resultado = buscarRuta(subcategoria, ruta);
       if (resultado !== null) {
         return resultado;
       }
     }
 
+    ruta.pop();
     return null;
   }
 
@@ -159,16 +160,19 @@ function precioPaquete(categoria) {
 function serviciosEnRango(categoria, min, max) {
   let resultado = [];
 
-  for (let servicio of categoria.servicios) {
-    if (servicio.precio >= min && servicio.precio <= max) {
-      resultado.push(servicio);
+  function buscarEnRango(actual) {
+    for (let servicio of actual.servicios) {
+      if (servicio.precio >= min && servicio.precio <= max) {
+        resultado.push(servicio);
+      }
+    }
+
+    for (let subcategoria of actual.subcategorias) {
+      buscarEnRango(subcategoria);
     }
   }
 
-  for (let subcategoria of categoria.subcategorias) {
-    resultado = resultado.concat(serviciosEnRango(subcategoria, min, max));
-  }
-
+  buscarEnRango(categoria);
   return resultado;
 }
 

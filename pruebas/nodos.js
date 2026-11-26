@@ -1,5 +1,5 @@
 let assert = require('node:assert/strict');
-let Nodo = require('../src/Nodo');
+let Nodo = require('../src/estructuras/Nodo');
 
 let lola = {
   nombre: 'Lola',
