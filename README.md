@@ -74,24 +74,26 @@ La [bitácora](./bitacora.md) documenta las decisiones, trazas, complejidades y 
 
 ## Complejidad de las operaciones
 
-`n` es el número de elementos de una estructura; `C` el número de categorías; `S` el número de servicios; `h` la profundidad máxima del catálogo.
+`n` es el número de elementos de una estructura; `C` el número de categorías; `S` el número de servicios; `h` la profundidad máxima del catálogo; `k` la cantidad de servicios que devuelve un filtro.
 
 | Estructura | Operación | Tiempo | Memoria auxiliar |
 | --- | --- | --- | --- |
 | Nodo | Crear y acceder a dato/enlace | O(1) | O(1) |
 | Lista enlazada | Agregar al inicio o al final | O(1) | O(1) |
-| Lista enlazada | Tamaño (contador guardado) | O(1) | O(1) |
+| Lista enlazada | Tamaño (contador guardado) o comprobar si está vacía | O(1) | O(1) |
 | Lista enlazada | Recorrer, buscar, insertar después o eliminar por condición | O(n) | O(1) iterativa |
 | Lista enlazada | Convertir a arreglo | O(n) | O(n) |
 | Lista enlazada | Tamaño, costo o búsqueda recursivos | O(n) | O(n) pila de llamadas |
 | Lista enlazada | Imprimir al revés recursivamente | O(n) | O(n) pila de llamadas |
 | Cola enlazada | Encolar, desencolar, ver frente, consultar tamaño/vacía | O(1) | O(1) |
 | Pila enlazada | Apilar, desapilar, ver tope, consultar tamaño/vacía | O(1) | O(1) |
-| Map clínico | Guardar o buscar historial por mascota | O(1) promedio | O(1) auxiliar por operación; O(m) para guardar m historiales |
+| Map clínico | Guardar o buscar historial por mascota | O(1) promedio | O(1) adicional por inserción; O(m) espacio total para m historiales |
 | Editor | Agregar atención | O(1) | O(1) por acción |
 | Editor | Eliminar, deshacer o rehacer | O(n) peor caso | O(1) por acción, aparte del recorrido |
-| Catálogo recursivo | Contar, listar o calcular precio de paquete | O(C + S) | O(h) pila de llamadas |
-| Catálogo recursivo | Buscar, obtener ruta o filtrar por precio | O(C + S) | O(h), más el resultado |
+| Catálogo recursivo | Contar, calcular profundidad, listar o calcular precio de paquete | O(C + S) | O(h) pila de llamadas |
+| Catálogo recursivo | Buscar servicio | O(C + S) | O(h) pila de llamadas |
+| Catálogo recursivo | Obtener ruta de servicio | O(C + S) | O(h) para llamadas y ruta |
+| Catálogo recursivo | Filtrar por precio | O(C + S) | O(h + k): llamadas y resultados |
 | Arreglo | Acceder por índice | O(1) | O(1) |
 | Arreglo | `push` al final | O(1) amortizado | O(1) auxiliar; puede crecer al redimensionar |
 | Arreglo | Recorrer o buscar | O(n) | O(1) auxiliar |
