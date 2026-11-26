@@ -70,7 +70,7 @@ Los módulos están organizados en [src/estructuras](./src/estructuras) y [src/d
 - **Categorías recursivas:** cuentan, muestran, buscan y agrupan servicios sin limitar la profundidad.
 - **Editor:** registra y elimina atenciones; una nueva acción descarta la pila de rehacer.
 
-La [bitácora](./bitacora.md) documenta las decisiones, trazas, complejidades y resultados de los MiniRetos.
+La [bitácora](./bitacora.md) documenta las decisiones, trazas, complejidades y resultados de los MiniRetos. Las operaciones recursivas de la lista usan O(n) memoria de pila y pueden exceder el límite del motor con listas grandes. Para tamaño, costo y búsqueda, el motor conserva como opción oficial la versión iterativa (el tamaño usa el contador O(1)).
 
 ## Complejidad de las operaciones
 
@@ -96,5 +96,3 @@ La [bitácora](./bitacora.md) documenta las decisiones, trazas, complejidades y 
 | Arreglo | `push` al final | O(1) amortizado | O(1) auxiliar; puede crecer al redimensionar |
 | Arreglo | Recorrer o buscar | O(n) | O(1) auxiliar |
 | Arreglo | `shift` | O(n) | O(1) |
-
-Las operaciones recursivas de la lista usan O(n) memoria de pila y pueden exceder el límite del motor con listas grandes. Para tamaño, costo y búsqueda, el motor conserva como opción oficial la versión iterativa (el tamaño usa el contador O(1)).
