@@ -168,3 +168,18 @@ Antes de programar, definí para cada recorrido recursivo:
 `precioPaquete` separa la suma recursiva del descuento: primero suma todos los precios y después aplica el 10 % una única vez. En Cirugías, los servicios suman $780.000 y el total correcto es $702.000. Si se aplicara el descuento en cada nivel, Esterilización daría $567.000 y Limpieza dental $135.000; luego Cirugías descontaría otra vez esos $702.000 y cobraría $631.800. Ese descuento repetido es incorrecto porque el paquete debe descontar el total completo una sola vez.
 
 Las pruebas buscan `Consulta general` (servicio de una rama superficial), `Gata` (rama profunda) y `Peluquería` (inexistente); también comprueban que la búsqueda corta al hallar un resultado, la categoría vacía, la ruta exacta de Gata, el paquete de Cirugías y los cinco servicios del rango de $80.000 a $150.000.
+
+## MiniReto 11: operaciones recursivas en el historial
+
+Cada método recursivo usa una función auxiliar que recibe el nodo actual. En los cuatro casos, el caso base es `nodo === null`. La recursión avanza a `nodo.siguiente`; al imprimir al revés, cada llamada espera a que termine la llamada siguiente antes de imprimir su propio dato. Por eso la pila de llamadas conserva el camino y produce el orden inverso sin arreglos ni una pila explícita.
+
+`pruebas/recursiva.js` compara tamaño, costo, búsqueda e impresión inversa con resultados iterativos para Lola, Toby y Mía. También ejecuta `tamanioRecursivo()` sobre 100.000 nodos y captura el `RangeError: Maximum call stack size exceeded`: cada nodo agrega una llamada pendiente, así que el consumo de pila es O(n) y excede el límite del motor.
+
+| Operación | Iterativa: tiempo | Iterativa: memoria auxiliar | Recursiva: tiempo | Recursiva: memoria de llamadas |
+| --- | --- | --- | --- | --- |
+| Tamaño | O(1) usando el contador mantenido por la lista | O(1) | O(n) | O(n) |
+| Suma de costos | O(n) | O(1) | O(n) | O(n) |
+| Buscar | O(n) | O(1) | O(n) | O(n) en el peor caso; O(1) si coincide con la cabeza |
+| Imprimir al revés | O(n) usando un arreglo como pila auxiliar | O(n) | O(n) | O(n), mediante la pila de llamadas |
+
+Dejo como oficiales las versiones iterativas para tamaño, suma y búsqueda: las tres evitan consumir una llamada de pila por nodo; para tamaño, el contador ya ofrece O(1). Mantengo `imprimirAlReves()` recursivo porque el requisito es mostrar el orden inverso sin modificar enlaces ni usar estructuras auxiliares explícitas. Su costo de pila O(n) limita su uso con historiales extremadamente largos, igual que las demás operaciones recursivas.

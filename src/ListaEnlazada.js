@@ -121,6 +121,64 @@ class ListaEnlazada {
     });
     return datos;
   }
+
+  tamanioRecursivo() {
+    function contar(nodo) {
+      if (nodo === null) {
+        return 0;
+      }
+
+      return 1 + contar(nodo.siguiente);
+    }
+
+    return contar(this.cabeza);
+  }
+
+  costoTotalRecursivo() {
+    function sumar(nodo) {
+      if (nodo === null) {
+        return 0;
+      }
+
+      let costo = 0;
+      if (typeof nodo.dato.costo === 'number') {
+        costo = nodo.dato.costo;
+      }
+
+      return costo + sumar(nodo.siguiente);
+    }
+
+    return sumar(this.cabeza);
+  }
+
+  buscarRecursivo(condicion) {
+    function buscar(nodo) {
+      if (nodo === null) {
+        return null;
+      }
+
+      if (condicion(nodo.dato)) {
+        return nodo.dato;
+      }
+
+      return buscar(nodo.siguiente);
+    }
+
+    return buscar(this.cabeza);
+  }
+
+  imprimirAlReves() {
+    function imprimir(nodo) {
+      if (nodo === null) {
+        return;
+      }
+
+      imprimir(nodo.siguiente);
+      console.log(nodo.dato);
+    }
+
+    imprimir(this.cabeza);
+  }
 }
 
 module.exports = ListaEnlazada;
