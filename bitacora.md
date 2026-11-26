@@ -161,6 +161,23 @@ Antes de programar, definí para cada recorrido recursivo:
 
 `nivel` empieza en 0 para la raíz. El catálogo original tiene 9 servicios y 3 niveles. Al agregar Oftalmología bajo Consultas › Especializada, el recorrido encuentra un servicio adicional y una profundidad de 4 sin cambiar las funciones.
 
+### Traza de `contarServicios` en Cirugías
+
+La categoría Cirugías no tiene servicios propios y contiene Esterilización (dos servicios) y Limpieza dental (un servicio). Las llamadas se completan de abajo hacia arriba:
+
+```text
+contarServicios(Cirugías) inicia total = 0
+├─ contarServicios(Esterilización) inicia total = 2
+│  └─ no tiene subcategorías → devuelve 2
+├─ Cirugías suma 2 → total = 2
+├─ contarServicios(Limpieza dental) inicia total = 1
+│  └─ no tiene subcategorías → devuelve 1
+├─ Cirugías suma 1 → total = 3
+└─ devuelve 3
+```
+
+Las hojas terminan sin más llamadas recursivas; Cirugías combina los resultados de sus dos ramas (0 + 2 + 1) y devuelve 3.
+
 ## MiniReto 10: rutas, búsquedas y paquetes
 
 `buscarServicio` revisa los servicios locales y retorna inmediatamente al encontrar la coincidencia; si no está en esta categoría, reduce el problema recorriendo sus subcategorías. `rutaDeServicio` agrega cada categoría al arreglo de la ruta mientras desciende y la retira al regresar de una rama sin coincidencia; devuelve una copia de la ruta al encontrar el servicio. Si no encuentra el nombre, devuelve `null`. `serviciosEnRango` acumula en un único arreglo los resultados de todas las ramas e incluye ambos límites.

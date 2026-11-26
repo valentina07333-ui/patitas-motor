@@ -1,4 +1,4 @@
-let catalogoModulo = require('./src/dominio/catalogo');
+let catalogoModulo = require('./src/catalogo');
 let Editor = require('./src/dominio/Editor');
 let simularManana = require('./src/simulacion');
 let formatoCosto = new Intl.NumberFormat('es-CO');

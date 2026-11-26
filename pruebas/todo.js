@@ -6,7 +6,7 @@ let Pila = require('../src/estructuras/Pila');
 let RegistroClinico = require('../src/dominio/RegistroClinico');
 let Recepcion = require('../src/dominio/Recepcion');
 let Editor = require('../src/dominio/Editor');
-let catalogoModulo = require('../src/dominio/catalogo');
+let catalogoModulo = require('../src/catalogo');
 
 let fallas = 0;
 
